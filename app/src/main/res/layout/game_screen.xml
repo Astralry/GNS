@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/game_screen">
+
+    <Button
+        android:text="@string/Back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"
+        android:id="@+id/button6"
+        android:onClick="home_screen"/>
+
+    <Button
+        android:text="@string/Tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button7"
+        android:layout_toEndOf="@+id/imageView12"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_above="@+id/textView" />
+
+    <ImageView
+        android:src="@drawable/ace_of_diamonds"
+        android:id="@+id/imageView2"
+        android:contentDescription="@string/AD"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <ImageView
+        android:src="@drawable/ace_of_hearts"
+        android:id="@+id/imageView4"
+        android:contentDescription="@string/AH"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <ImageView
+        android:src="@drawable/ace_of_spades"
+        android:id="@+id/imageView5"
+        android:contentDescription="@string/AS"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/two_of_clubs"
+        android:id="@+id/imageView6"
+        android:contentDescription="@string/TwoC"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/two_of_hearts"
+        android:id="@+id/imageView8"
+        android:contentDescription="@string/TwoH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/two_of_spades"
+        android:id="@+id/imageView9"
+        android:contentDescription="@string/TwoS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/three_of_clubs"
+        android:id="@+id/imageView10"
+        android:contentDescription="@string/ThreeC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/three_of_diamonds"
+        android:id="@+id/imageView11"
+        android:contentDescription="@string/ThreeD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/three_of_hearts"
+        android:id="@+id/imageView12"
+        android:contentDescription="@string/ThreeH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/three_of_spades"
+        android:layout_marginTop="10dp"
+        android:id="@+id/imageView13"
+        android:contentDescription="@string/ThreeS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/four_of_clubs"
+        android:id="@+id/imageView14"
+        android:contentDescription="@string/FourC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/four_of_spades"
+        android:id="@+id/imageView15"
+        android:contentDescription="@string/FourS"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/four_of_diamonds"
+        android:id="@+id/imageView16"
+        android:contentDescription="@string/FourD"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/four_of_hearts"
+        android:id="@+id/imageView17"
+        android:contentDescription="@string/FourH"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/five_of_diamonds"
+        android:id="@+id/imageView19"
+        android:contentDescription="@string/FiveD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/five_of_hearts"
+        android:id="@+id/imageView20"
+        android:contentDescription="@string/FiveH"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/five_of_spades"
+        android:id="@+id/imageView55"
+        android:contentDescription="@string/FiveH"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/five_of_clubs"
+        android:id="@+id/imageView21"
+        android:contentDescription="@string/FiveC"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/six_of_clubs"
+        android:id="@+id/imageView22"
+        android:contentDescription="@string/SixC"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/six_of_diamonds"
+        android:id="@+id/imageView23"
+        android:contentDescription="@string/SixD"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/six_of_hearts"
+        android:id="@+id/imageView24"
+        android:layout_marginTop="11dp"
+        android:contentDescription="@string/SixH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/six_of_spades"
+        android:id="@+id/imageView25"
+        android:contentDescription="@string/SixS"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/seven_of_clubs"
+        android:id="@+id/imageView26"
+        android:contentDescription="@string/SevenC"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/seven_of_diamonds"
+        android:id="@+id/imageView27"
+        android:contentDescription="@string/SevenD"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/seven_of_hearts"
+        android:id="@+id/imageView28"
+        android:contentDescription="@string/SevenH"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/eight_of_clubs"
+        android:id="@+id/imageView30"
+        android:contentDescription="@string/EightC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/eight_of_diamonds"
+        android:id="@+id/imageView31"
+        android:contentDescription="@string/EightD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/eight_of_hearts"
+        android:id="@+id/imageView32"
+        android:contentDescription="@string/EightH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/eight_of_spades"
+        android:id="@+id/imageView33"
+        android:contentDescription="@string/EightS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/nine_of_clubs"
+        android:id="@+id/imageView34"
+        android:contentDescription="@string/NineC" />
+
+    <ImageView
+        android:src="@drawable/ace_of_clubs"
+        android:id="@+id/imageView"
+        android:contentDescription="@string/AS"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="21dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/five_of_clubs"
+        android:id="@+id/imageView18"
+        android:contentDescription="@string/FiveC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/seven_of_spades"
+        android:id="@+id/imageView29"
+        android:contentDescription="@string/SevenS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/nine_of_diamonds"
+        android:id="@+id/imageView35"
+        android:contentDescription="@string/NineD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/nine_of_hearts"
+        android:id="@+id/imageView36"
+        android:contentDescription="@string/NineH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/nine_of_spades"
+        android:id="@+id/imageView37"
+        android:contentDescription="@string/NineS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ten_of_clubs"
+        android:id="@+id/imageView38"
+        android:contentDescription="@string/TenC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ten_of_diamonds"
+        android:id="@+id/imageView39"
+        android:contentDescription="@string/TenD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ten_of_hearts"
+        android:id="@+id/imageView40"
+        android:contentDescription="@string/TenH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ten_of_spades"
+        android:id="@+id/imageView41"
+        android:contentDescription="@string/TenS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/jack_of_clubs"
+        android:id="@+id/imageView42"
+        android:contentDescription="@string/JackC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/jack_of_diamonds"
+        android:layout_alignTop="@+id/imageView42"
+        android:layout_toStartOf="@+id/imageView33"
+        android:id="@+id/imageView43"
+        android:contentDescription="@string/JackD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/jack_of_hearts"
+        android:id="@+id/imageView44"
+        android:contentDescription="@string/JackH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/jack_of_spades"
+        android:id="@+id/imageView45"
+        android:contentDescription="@string/JackS" />
+
+    <TextView
+        android:text="@string/Score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/two_of_diamonds"
+        android:id="@+id/imageView7"
+        android:contentDescription="@string/TwoD"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:layout_marginTop="45dp" />
+
+    <TextView
+        android:text="@string/Highscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/queen_of_clubs"
+        android:id="@+id/imageView46"
+        android:contentDescription="@string/QueenC"
+        android:layout_marginTop="83dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/queen_of_diamonds"
+        android:id="@+id/imageView47"
+        android:contentDescription="@string/QueenD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/queen_of_hearts"
+        android:id="@+id/imageView48"
+        android:contentDescription="@string/QueenH" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/queen_of_spades"
+        android:id="@+id/imageView49"
+        android:contentDescription="@string/QueenS" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/black_joker"
+        android:id="@+id/imageView50"
+        android:contentDescription="@string/cellar" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/king_of_clubs"
+        android:id="@+id/imageView51"
+        android:contentDescription="@string/KingC" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/king_of_diamonds"
+        android:id="@+id/imageView52"
+        android:contentDescription="@string/KingD" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/king_of_hearts"
+        android:id="@+id/imageView53"
+        android:contentDescription="@string/KingH"
+        android:layout_marginBottom="36dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/king_of_spades"
+        android:id="@+id/imageView54"
+        android:contentDescription="@string/KingS" />
+
+    <Button
+        android:text="@string/Redo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button8"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>
