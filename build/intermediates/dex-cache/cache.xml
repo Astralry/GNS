@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/a778433648eb6d1b45b64f93b92836e4c263922f/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_2d0f29fed21a48c6823e24eb81e5be141fcce5f0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/8a348affd06db9057f13fae52016836873b23fb5/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9c1c44672010b6847f3744ec3702624d8d16c240">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_6e975a81673a786e70370de2662ae6e7bef041f9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/support-annotations-25.1.1_d48abc30defa7105c6cf8ec7924375d73fe45601.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/29c300c39ec8cf2508a06f98bd7463f5b92bfcf5/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_8c50953f578dffc00b48a4a44060315bdb72dec3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/98e2151463bef8bc310371a85b32dbb8359230ec/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_60821fca50fe85a877662ed6ff56a6d89efebd90.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/23de74bad0f6bd0e445163b6e14204b5fc6d8c2c/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_34c1950458167f69ea3a602ddb58e130622097d0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/b44263ff604c73da4b620242d43b920f4c23eb03/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_2bfe9131897c60f5d9449f74789ec25a28c7a579.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/983900752e3deb57185472aa3da5eced160d2818/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_36aaa97727da143d42ea1eda7b52ed431a5b9b66.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/8fc36662ad1c349d0adbc179ff5712685bc3df38/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_d72896a4abdd6695dfeb602caf78c31e23ab79fc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/e5b6cf757b17873a9a5026615053c477ce1f33bb/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_623256d63e9cee36f8f16e5d59ae186fdf2a9b4c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/adrianpan/.android/build-cache/aa2b3b011c0bcdb6a18f8ec136775b9cf789556a/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_4538b7fff0dcba9045bb452b0217609f6b0dd0fd.jar" />
+    </item>
+
+</items>
