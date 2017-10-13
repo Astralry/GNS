@@ -194,6 +194,7 @@ public class Game extends Activity{
         Deck deck = new Deck();
         deck.populate();
         deck.shuffle();
+
     }
 
     private OnTouchListener onTouchListener(){
