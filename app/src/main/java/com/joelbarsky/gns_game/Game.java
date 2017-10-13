@@ -82,7 +82,7 @@ public class Game extends Activity{
         aceC = (ImageView) findViewById(R.id.imageView);
         aceH = (ImageView) findViewById(R.id.imageView4);
         aceS = (ImageView) findViewById(R.id.imageView5);
-//        twoD = (ImageView) findViewById(R.id.imageView7);
+        twoD = (ImageView) findViewById(R.id.imageView7);
 //        twoC = (ImageView) findViewById(R.id.imageView6);
 //        twoH = (ImageView) findViewById(R.id.imageView8);
 //        twoS = (ImageView) findViewById(R.id.imageView9);
@@ -187,6 +187,15 @@ public class Game extends Activity{
 
 
     }
+
+    protected void onStart(){
+        super.onStart();
+
+        Deck deck = new Deck();
+        deck.populate();
+        deck.shuffle();
+    }
+
     private OnTouchListener onTouchListener(){
         return new OnTouchListener() {
 
