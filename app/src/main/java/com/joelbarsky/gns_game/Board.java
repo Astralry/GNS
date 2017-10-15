@@ -34,6 +34,4 @@ public class Board {
         return deck;
     }
 
-
-
 }
