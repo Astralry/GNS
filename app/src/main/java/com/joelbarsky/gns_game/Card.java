@@ -20,9 +20,11 @@ public class Card {
     public String getSuit() {
         return suit.printSuit();
     }
+
     public int getRank(){
         return rank.getRank();
     }
+
     public String toString(){
         String str = " ";
         str += rank.printRank() + " of " + suit.printSuit();
