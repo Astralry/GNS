@@ -78,8 +78,6 @@ public class Game extends Activity {
     private ImageView kingH;
     private ImageView kingS;
 
-    private Deck deck;
-
     private int xDelta;
     private int yDelta;
 
@@ -208,6 +206,7 @@ public class Game extends Activity {
         super.onStart();
 
 //        setup deck
+        Deck deck = new Deck();
         deck.populate();
         deck.shuffle();
 
@@ -259,9 +258,5 @@ public class Game extends Activity {
     public void home_screen(View v){
         Intent toHome = new Intent(v.getContext(), Home.class);
         startActivityForResult(toHome, 0);
-    }
-
-    public Deck getDeck(){
-        return deck;
     }
 }
