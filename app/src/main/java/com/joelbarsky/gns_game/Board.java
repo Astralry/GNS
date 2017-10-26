@@ -21,6 +21,7 @@ public class Board {
     public ArrayList<Stack<Card>> getCards(){
         return this.cards;
     }
+
     public void clear(){
         cards.clear();
     }

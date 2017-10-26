@@ -8,6 +8,7 @@ import java.util.Stack;
  */
 
 public class Deck extends Board {
+
     Random rand = new Random();
     public void populate(){
         for (Suit suit: Suit.values()){
