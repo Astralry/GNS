@@ -1,4 +1,5 @@
 package com.joelbarsky.gns_game;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
@@ -21,11 +22,20 @@ public class Deck extends Board {
     public void shuffle(){
         for (int i = cards.size() - 1; i > 0; i--){
             int position= rand.nextInt(i);
-            Stack<Card> randomCardStack = cards.get(position);
-            Stack<Card> lastCardStack = cards.get(i);
-            cards.set(i, randomCardStack);
-            cards.set(position, lastCardStack);
+            Card randomCard = cards.get(position);
+            Card lastCard = cards.get(i);
+            cards.set(i, randomCard);
+            cards.set(position, lastCard);
 
         }
+    }
+    public String printCardFromDeck(Deck deck, int pos){
+        Card card;
+        String print;
+        ArrayList<Card> cards;
+        cards = deck.getCards();
+        card = cards.get(pos);
+        print = card.toString();
+        return print;
     }
 }

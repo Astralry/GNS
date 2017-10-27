@@ -10,15 +10,15 @@ import java.util.Stack;
 public class Board {
 
     //Attributes
-    public ArrayList<Stack<Card>> cards;
+    public ArrayList<Card> cards;
 
     //Constructor
     public Board(){
-        cards = new ArrayList<Stack<Card>>();
+        cards = new ArrayList<Card>();
     }
 
     //Public Methods
-    public ArrayList<Stack<Card>> getCards(){
+    public ArrayList<Card> getCards(){
         return this.cards;
     }
 
@@ -27,17 +27,13 @@ public class Board {
     }
 
     public void add(Card card){
-        Stack<Card> stack = new Stack<Card>();
-        stack.clear();
-        stack.push(card);
-        cards.add(stack);
+        cards.add(card);
     }
 
     public String printDeck(){
         String deck = "";
         for (int i = 0; i< 52; i++){
-            Stack<Card> cardStack = cards.get(i);
-            Card card = cardStack.peek();
+            Card card = cards.get(i);
             deck += card.toString() + "\n";
         }
         return deck;

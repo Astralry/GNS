@@ -81,6 +81,8 @@ public class Game extends Activity {
     private int xDelta;
     private int yDelta;
 
+    private static Deck deck = new Deck();
+
     DrawingTheDeck v;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,10 @@ public class Game extends Activity {
         v = new DrawingTheDeck(this);
         setContentView(v);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        //        setup deck
+        deck.populate();
+        deck.shuffle();
 
 //        setContentView(R.layout.game_screen);
 
@@ -205,10 +211,7 @@ public class Game extends Activity {
     protected void onStart(){
         super.onStart();
 
-//        setup deck
-        Deck deck = new Deck();
-        deck.populate();
-        deck.shuffle();
+
 
     }
 
@@ -258,5 +261,9 @@ public class Game extends Activity {
     public void home_screen(View v){
         Intent toHome = new Intent(v.getContext(), Home.class);
         startActivityForResult(toHome, 0);
+    }
+
+    public static Deck getDeck(){
+        return deck;
     }
 }
