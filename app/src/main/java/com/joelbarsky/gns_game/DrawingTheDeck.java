@@ -30,7 +30,7 @@ public class DrawingTheDeck extends View {
 //        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 //        is = new ByteArrayInputStream(stream.toByteArray());
         //Load the spritesheet
-        ss = BitmapFactory.decodeResource(getResources(),R.drawable.deck_sheet);
+        ss = BitmapFactory.decodeResource(getResources(),R.drawable.deck_sheet3);
 
     }
 
@@ -56,13 +56,29 @@ public class DrawingTheDeck extends View {
     }
 
     //Returns the x and y coordinate of the position with index pos
-    public int[] calculatePosition(int pos){
+    public int[] calculatePosition(int index){
         int[] xy = {0,0};
-        int rowSpacing = 100;
         int colSpacing = 100;
-        int rowWidth = 13;
-        xy[0] = (pos % rowWidth) * rowSpacing + rowSpacing;
-        xy[1] = (pos / rowWidth) * colSpacing + colSpacing;
+        int rowSpacing = 130;
+        int rowWidth = 10;
+        int cardWidth = 81;
+        int cardSpacing = colSpacing - cardWidth;
+
+        //first block
+        if (index < 20) {
+            xy[0] = (index % (rowWidth / 2)) * colSpacing + colSpacing;
+            xy[1] = (index / (rowWidth / 2)) * rowSpacing + rowSpacing;
+            //cellar left row
+        } else if (index > 19 && index < 24){
+            xy[0] = (index % (rowWidth / 2)) * colSpacing + 2*colSpacing;
+            xy[1] = (index / (rowWidth / 2)) * rowSpacing + rowSpacing;
+        } else if (index > 23 && index < 48){
+            xy[0] = ((index - 24) % (rowWidth / 2)) * colSpacing + cardWidth + 6*colSpacing + cardSpacing;
+            xy[1] = ((index - 24) / (rowWidth / 2)) * rowSpacing + rowSpacing;
+        } else if (index > 47){
+            xy[0] = 6 * colSpacing;
+            xy[1] = (index - 48)*rowSpacing + rowSpacing/2;
+        }
         return xy;
         //TODO arrange them like the board
     }
@@ -87,10 +103,10 @@ public class DrawingTheDeck extends View {
             row = 4;
         }
 
-        int y = 351*(row - 1);
-        int x = 243*(col - 1);
+        int y = 117*(row - 1);
+        int x = 81*(col - 1);
 
-        Bitmap resized = Bitmap.createBitmap(ss, x, y, 243, 351);
+        Bitmap resized = Bitmap.createBitmap(ss, x, y, 81, 117);
         return resized;
     }
 
