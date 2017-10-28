@@ -92,6 +92,7 @@ public class Game extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //        setup deck
+        deck.clear();
         deck.populate();
         deck.shuffle();
 
@@ -265,5 +266,8 @@ public class Game extends Activity {
 
     public static Deck getDeck(){
         return deck;
+    }
+    public static void setDeck(Deck deck){
+        Game.deck = deck;
     }
 }
