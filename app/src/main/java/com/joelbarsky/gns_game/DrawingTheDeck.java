@@ -49,7 +49,7 @@ public class DrawingTheDeck extends View {
 
 //        canvas.drawText(deck.printCardFromDeck(deck, 1), 200, 200, paint);
         int[] xy;
-        for (int i = 0; i < 52; i++){
+        for (int i = 0; i < 52 ; i++){
             xy = calculatePosition(i);
             canvas.drawBitmap(getSubImage(deck,i), xy[0], xy[1], null);
         }
@@ -58,9 +58,13 @@ public class DrawingTheDeck extends View {
     //Returns the x and y coordinate of the position with index pos
     public int[] calculatePosition(int pos){
         int[] xy = {0,0};
-        xy[0] = pos%13*100 + 100;
-        xy[1] = pos/13*100 + 100;
+        int rowSpacing = 100;
+        int colSpacing = 100;
+        int rowWidth = 13;
+        xy[0] = (pos % rowWidth) * rowSpacing + rowSpacing;
+        xy[1] = (pos / rowWidth) * colSpacing + colSpacing;
         return xy;
+        //TODO arrange them like the board
     }
     //Returns the sub image of the card from deck at position pos
     public Bitmap getSubImage(Deck deck, int pos){
