@@ -5,10 +5,10 @@ package com.joelbarsky.gns_game;
  */
 
 enum Suit {
-    DIAMONDS("diamonds"),
-    CLUBS("Clubs"),
-    HEARTS("Hearts"),
-    SPADES("Spades");
+    DIAMONDS("DIAMONDS"),
+    CLUBS("CLUBS"),
+    HEARTS("HEARTS"),
+    SPADES("SPADES");
 
     private final String suitText;
 

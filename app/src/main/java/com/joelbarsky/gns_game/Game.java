@@ -1,5 +1,10 @@
 package com.joelbarsky.gns_game;
 
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
@@ -11,7 +16,12 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.*;
 
-public class Game extends Activity{
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public class Game extends Activity {
 
     private ViewGroup mainLayout;
 
@@ -71,18 +81,28 @@ public class Game extends Activity{
     private int xDelta;
     private int yDelta;
 
+    private static Deck deck = new Deck();
 
-    @Override
+    DrawingTheDeck v;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_screen);
+        v = new DrawingTheDeck(this);
+        setContentView(v);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        mainLayout = (RelativeLayout) findViewById(R.id.game_screen);
-        aceD = (ImageView) findViewById(R.id.imageView2);
-        aceC = (ImageView) findViewById(R.id.imageView);
-        aceH = (ImageView) findViewById(R.id.imageView4);
-        aceS = (ImageView) findViewById(R.id.imageView5);
-        twoD = (ImageView) findViewById(R.id.imageView7);
+        //        setup deck
+        deck.populate();
+        deck.shuffle();
+
+//        setContentView(R.layout.game_screen);
+
+//        mainLayout = (RelativeLayout) findViewById(R.id.game_screen);
+//        aceD = (ImageView) findViewById(R.id.imageView2);
+//        aceC = (ImageView) findViewById(R.id.imageView);
+//        aceH = (ImageView) findViewById(R.id.imageView4);
+//        aceS = (ImageView) findViewById(R.id.imageView5);
+//        twoD = (ImageView) findViewById(R.id.imageView7);
 //        twoC = (ImageView) findViewById(R.id.imageView6);
 //        twoH = (ImageView) findViewById(R.id.imageView8);
 //        twoS = (ImageView) findViewById(R.id.imageView9);
@@ -131,10 +151,10 @@ public class Game extends Activity{
 //        kingH = (ImageView) findViewById(R.id.imageView53);
 //        kingS = (ImageView) findViewById(R.id.imageView54);
 
-        aceD.setOnTouchListener(onTouchListener());
-        aceC.setOnTouchListener(onTouchListener());
-        aceH.setOnTouchListener(onTouchListener());
-        aceS.setOnTouchListener(onTouchListener());
+//        aceD.setOnTouchListener(onTouchListener());
+//        aceC.setOnTouchListener(onTouchListener());
+//        aceH.setOnTouchListener(onTouchListener());
+//        aceS.setOnTouchListener(onTouchListener());
 //        twoD.setOnTouchListener(onTouchListener());
 //        twoC.setOnTouchListener(onTouchListener());
 //        twoH.setOnTouchListener(onTouchListener());
@@ -184,18 +204,18 @@ public class Game extends Activity{
 //        kingH.setOnTouchListener(onTouchListener());
 //        kingS.setOnTouchListener(onTouchListener());
 
-
-
     }
+
+
 
     protected void onStart(){
         super.onStart();
 
-        Deck deck = new Deck();
-        deck.populate();
-        deck.shuffle();
+
 
     }
+
+
 
     private OnTouchListener onTouchListener(){
         return new OnTouchListener() {
@@ -243,5 +263,7 @@ public class Game extends Activity{
         startActivityForResult(toHome, 0);
     }
 
-
+    public static Deck getDeck(){
+        return deck;
+    }
 }

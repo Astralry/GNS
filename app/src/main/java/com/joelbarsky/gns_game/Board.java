@@ -1,6 +1,7 @@
 package com.joelbarsky.gns_game;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by kevin on 2017-10-11.
@@ -17,6 +18,10 @@ public class Board {
     }
 
     //Public Methods
+    public ArrayList<Card> getCards(){
+        return this.cards;
+    }
+
     public void clear(){
         cards.clear();
     }
@@ -33,7 +38,5 @@ public class Board {
         }
         return deck;
     }
-
-
 
 }
