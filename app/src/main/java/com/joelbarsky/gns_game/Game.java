@@ -1,18 +1,37 @@
 package com.joelbarsky.gns_game;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.*;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.*;
+import java.lang.Object;
+import android.util.DisplayMetrics;
+
 
 public class Game extends Activity{
 
+    int column1;
+    int column2;
+    int column3;
+    int column4;
+    int column5;
+    int column6;
+    int column7;
+    int column8;
+    int column9;
+    int column10;
+    int column11;
+    int columnSnappingRange;
+
+    int row1;
     private ViewGroup mainLayout;
 
     private ImageView aceD;
@@ -76,6 +95,27 @@ public class Game extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels; //x resolution
+        int height = metrics.heightPixels; //y resolution
+        column1 = width/11/2+1*width/11;
+        column2 = width/11*2+2*width/11;
+        column3 = width/11*2+3*width/11;
+
+        column4 = width/11*2+4*width/11;
+        column5 = width/11*2+5*width/11;
+        column6 = width/11*2+6*width/11;
+        column7 = width/11*2+7*width/11;
+        column8 = width/11*2+8*width/11;
+        column9 = width/11*2+9*width/11;
+        column10 = width/11*2+10*width/11;
+        column11 = width/11*2+11*width/11;
+        columnSnappingRange = width/11/2;
+        row1 = height/6*1;
+
+        Log.d("ApplicationTagName", "Display width in px is " + metrics.widthPixels);
 
         mainLayout = (RelativeLayout) findViewById(R.id.game_screen);
         aceD = (ImageView) findViewById(R.id.imageView2);
@@ -185,7 +225,6 @@ public class Game extends Activity{
 //        kingS.setOnTouchListener(onTouchListener());
 
 
-
     }
     private OnTouchListener onTouchListener(){
         return new OnTouchListener() {
@@ -199,6 +238,8 @@ public class Game extends Activity{
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
                     case MotionEvent.ACTION_DOWN:
+
+
                         RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams)
                                 view.getLayoutParams();
 
@@ -206,16 +247,23 @@ public class Game extends Activity{
                         yDelta = y - lParams.topMargin;
                         break;
 
-//                    case MotionEvent.ACTION_UP:
-//                        Toast.makeText(MainActivity.this,
-//                                "thanks for new location!", Toast.LENGTH_SHORT)
-//                                .show();
-//                        break;
+                    case MotionEvent.ACTION_UP:
+                        RelativeLayout.LayoutParams layoutParam = (RelativeLayout.LayoutParams) view
+                                .getLayoutParams();
+                        System.out.println("Column3: " + column5);
+                        System.out.println("Left: " + layoutParam.leftMargin);
+                        columnSnapping(layoutParam);
+                        view.setLayoutParams(layoutParam);
+ //                       Toast.makeText(MainActivity.this,
+ //                               "thanks for new location!", Toast.LENGTH_SHORT)
+ //                               .show();
+                        break;
 
                     case MotionEvent.ACTION_MOVE:
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
                                 .getLayoutParams();
                         layoutParams.leftMargin = x - xDelta;
+
                         layoutParams.topMargin = y - yDelta;
                         layoutParams.rightMargin = 0;
                         layoutParams.bottomMargin = 0;
@@ -226,6 +274,39 @@ public class Game extends Activity{
                 return true;
             }
         };
+    }
+
+    public void columnSnapping(RelativeLayout.LayoutParams layout){
+        if (Math.abs(layout.leftMargin - column1) < columnSnappingRange){
+            layout.leftMargin = column1;
+        }
+        if (Math.abs(layout.leftMargin - column2) < columnSnappingRange){
+            layout.leftMargin = column2;
+        }
+        if (Math.abs(layout.leftMargin - column3) < columnSnappingRange){
+            layout.leftMargin = column3;
+        }
+        if (Math.abs(layout.leftMargin - column4) < columnSnappingRange){
+            layout.leftMargin = column4;
+        }
+        if (Math.abs(layout.leftMargin - column5) < columnSnappingRange){
+            layout.leftMargin = column5;
+        }
+        if (Math.abs(layout.leftMargin - column6) < columnSnappingRange){
+            layout.leftMargin = column6;
+        }
+        if (Math.abs(layout.leftMargin - column7) < columnSnappingRange){
+            layout.leftMargin = column7;
+        }
+        if (Math.abs(layout.leftMargin - column8) < columnSnappingRange){
+            layout.leftMargin = column8;
+        }
+        if (Math.abs(layout.leftMargin - column9) < columnSnappingRange) {
+            layout.leftMargin = column9;
+        }
+        if (Math.abs(layout.leftMargin - column10) < columnSnappingRange){
+            layout.leftMargin = column10;
+        }
     }
 
     public void home_screen(View v){

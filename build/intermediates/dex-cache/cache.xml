@@ -20,6 +20,15 @@
         <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_6e975a81673a786e70370de2662ae6e7bef041f9.jar" />
     </item>
     <item
+        is-multidex="true"
+        jar="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4d38c7c69264bd85dbc4c4ebc45d80fbb6512242">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_108608acd5d6b449e37d2d331bf3bc3988d72049/classes.dex" />
+    </item>
+    <item
         is-multidex="false"
         jar="/Users/adrianpan/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
         jumboMode="false"
@@ -45,6 +54,15 @@
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/pre-dexed/debug/classes_60821fca50fe85a877662ed6ff56a6d89efebd90.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS_game/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_85ac4aa6278f20cb05675a6f73aa4d609a92d67c/classes.dex" />
     </item>
     <item
         is-multidex="false"
