@@ -1,93 +1,81 @@
 package com.joelbarsky.gns_game;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.*;
-import android.util.Log;
 import android.view.*;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.*;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-public class Game extends Activity {
+public class Game extends Activity implements OnTouchListener{
 
     private ViewGroup mainLayout;
 
-    private ImageView aceD;
-    private ImageView aceC;
-    private ImageView aceH;
-    private ImageView aceS;
-    private ImageView twoD;
-    private ImageView twoC;
-    private ImageView twoH;
-    private ImageView twoS;
-    private ImageView threeD;
-    private ImageView threeC;
-    private ImageView threeH;
-    private ImageView threeS;
-    private ImageView fourD;
-    private ImageView fourC;
-    private ImageView fourH;
-    private ImageView fourS;
-    private ImageView fiveD;
-    private ImageView fiveC;
-    private ImageView fiveH;
-    private ImageView fiveS;
-    private ImageView sixD;
-    private ImageView sixC;
-    private ImageView sixH;
-    private ImageView sixS;
-    private ImageView sevenD;
-    private ImageView sevenC;
-    private ImageView sevenH;
-    private ImageView sevenS;
-    private ImageView eightD;
-    private ImageView eightC;
-    private ImageView eightH;
-    private ImageView eightS;
-    private ImageView nineD;
-    private ImageView nineC;
-    private ImageView nineH;
-    private ImageView nineS;
-    private ImageView tenD;
-    private ImageView tenC;
-    private ImageView tenH;
-    private ImageView tenS;
-    private ImageView jackD;
-    private ImageView jackC;
-    private ImageView jackH;
-    private ImageView jackS;
-    private ImageView queenD;
-    private ImageView queenC;
-    private ImageView queenH;
-    private ImageView queenS;
-    private ImageView kingD;
-    private ImageView kingC;
-    private ImageView kingH;
-    private ImageView kingS;
+//    private ImageView aceD;
+//    private ImageView aceC;
+//    private ImageView aceH;
+//    private ImageView aceS;
+//    private ImageView twoD;
+//    private ImageView twoC;
+//    private ImageView twoH;
+//    private ImageView twoS;
+//    private ImageView threeD;
+//    private ImageView threeC;
+//    private ImageView threeH;
+//    private ImageView threeS;
+//    private ImageView fourD;
+//    private ImageView fourC;
+//    private ImageView fourH;
+//    private ImageView fourS;
+//    private ImageView fiveD;
+//    private ImageView fiveC;
+//    private ImageView fiveH;
+//    private ImageView fiveS;
+//    private ImageView sixD;
+//    private ImageView sixC;
+//    private ImageView sixH;
+//    private ImageView sixS;
+//    private ImageView sevenD;
+//    private ImageView sevenC;
+//    private ImageView sevenH;
+//    private ImageView sevenS;
+//    private ImageView eightD;
+//    private ImageView eightC;
+//    private ImageView eightH;
+//    private ImageView eightS;
+//    private ImageView nineD;
+//    private ImageView nineC;
+//    private ImageView nineH;
+//    private ImageView nineS;
+//    private ImageView tenD;
+//    private ImageView tenC;
+//    private ImageView tenH;
+//    private ImageView tenS;
+//    private ImageView jackD;
+//    private ImageView jackC;
+//    private ImageView jackH;
+//    private ImageView jackS;
+//    private ImageView queenD;
+//    private ImageView queenC;
+//    private ImageView queenH;
+//    private ImageView queenS;
+//    private ImageView kingD;
+//    private ImageView kingC;
+//    private ImageView kingH;
+//    private ImageView kingS;
 
     private int xDelta;
     private int yDelta;
+    private static float x,y = 0;
 
     private static Deck deck = new Deck();
-
     DrawingTheDeck v;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         v = new DrawingTheDeck(this);
+        v.setOnTouchListener(this);
         setContentView(v);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
@@ -95,6 +83,7 @@ public class Game extends Activity {
         deck.clear();
         deck.populate();
         deck.shuffle();
+        deck.setupFoundation();
 
 //        setContentView(R.layout.game_screen);
 
@@ -204,60 +193,93 @@ public class Game extends Activity {
 //        kingC.setOnTouchListener(onTouchListener());
 //        kingH.setOnTouchListener(onTouchListener());
 //        kingS.setOnTouchListener(onTouchListener());
-
+    }
+    public static void setX(float x){
+        Game.x = x;
+    }
+    public static float getX(){
+        return x;
+    }
+    public static void setY(float y){
+        Game.y = y;
+    }
+    public static float getY(){
+        return y;
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
 
+        switch(event.getAction()) {
+            case (MotionEvent.ACTION_DOWN):
+                x = event.getX();
+                y = event.getY();
+                break;
+            case (MotionEvent.ACTION_MOVE):
+                x = event.getX();
+                y = event.getY();
+                break;
+            case(MotionEvent.ACTION_UP):
+                x = event.getX();
+                y = event.getY();
+                break;
+        }
+        return true;
+    }
+
+    protected void onPause(){
+        super.onPause();
+        v.pause();
+    }
+    protected void onResume(){
+        super.onResume();
+        v.resume();
+    }
 
     protected void onStart(){
         super.onStart();
-
-
-
     }
 
-
-
-    private OnTouchListener onTouchListener(){
-        return new OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-
-                final int x = (int) event.getRawX();
-                final int y = (int) event.getRawY();
-
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-
-                    case MotionEvent.ACTION_DOWN:
-                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams)
-                                view.getLayoutParams();
-
-                        xDelta = x - lParams.leftMargin;
-                        yDelta = y - lParams.topMargin;
-                        break;
-
-//                    case MotionEvent.ACTION_UP:
-//                        Toast.makeText(MainActivity.this,
-//                                "thanks for new location!", Toast.LENGTH_SHORT)
-//                                .show();
+//    private OnTouchListener onTouchListener(){
+//        return new OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View view, MotionEvent event) {
+//
+//                final int x = (int) event.getRawX();
+//                final int y = (int) event.getRawY();
+//
+//                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+//
+//                    case MotionEvent.ACTION_DOWN:
+//                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams)
+//                                view.getLayoutParams();
+//
+//                        xDelta = x - lParams.leftMargin;
+//                        yDelta = y - lParams.topMargin;
 //                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
-                                .getLayoutParams();
-                        layoutParams.leftMargin = x - xDelta;
-                        layoutParams.topMargin = y - yDelta;
-                        layoutParams.rightMargin = 0;
-                        layoutParams.bottomMargin = 0;
-                        view.setLayoutParams(layoutParams);
-                        break;
-                }
-                mainLayout.invalidate();
-                return true;
-            }
-        };
-    }
+//
+////                    case MotionEvent.ACTION_UP:
+////                        Toast.makeText(MainActivity.this,
+////                                "thanks for new location!", Toast.LENGTH_SHORT)
+////                                .show();
+////                        break;
+//
+//                    case MotionEvent.ACTION_MOVE:
+//                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+//                                .getLayoutParams();
+//                        layoutParams.leftMargin = x - xDelta;
+//                        layoutParams.topMargin = y - yDelta;
+//                        layoutParams.rightMargin = 0;
+//                        layoutParams.bottomMargin = 0;
+//                        view.setLayoutParams(layoutParams);
+//                        break;
+//                }
+//                mainLayout.invalidate();
+//                return true;
+//            }
+//        };
+//    }
 
     public void home_screen(View v){
         Intent toHome = new Intent(v.getContext(), Home.class);
@@ -270,4 +292,6 @@ public class Game extends Activity {
     public static void setDeck(Deck deck){
         Game.deck = deck;
     }
+
+
 }

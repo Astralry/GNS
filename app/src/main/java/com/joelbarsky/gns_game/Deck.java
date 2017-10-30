@@ -29,6 +29,30 @@ public class Deck extends Board {
 
         }
     }
+    //setup deck foundation
+    public void setupFoundation() {
+        //Foundation of the board must be of the same rank;
+        Card tempCard;
+
+        //swap 1st card and foundation card
+        Card foundationCard = cards.get(48);
+        int foundationRank = foundationCard.getRank();
+        tempCard = cards.get(48);
+        cards.set(48, cards.get(0));
+        cards.set(0, tempCard);
+        int n = 48;
+
+        //Search the deck for cards with the foundationRank
+        for (int i = 0; i < 48; i++) {
+            if (cards.get(i).getRank() == foundationRank) {
+                tempCard = cards.get(i);
+                cards.set(i, cards.get(n));
+                cards.set(n, tempCard);
+                n++;
+            }
+
+        }
+    }
     public String printCardFromDeck(Deck deck, int pos){
         Card card;
         String print;
