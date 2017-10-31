@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private Bitmap ss;
-    boolean init = false;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -27,7 +26,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private float[] allX;
     private float[] allY;
-
+    private int index = 100;
 
     private int updates;
     private int frames;
@@ -50,7 +49,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //setup board
         for (int i = 0; i < 52; i++){
-            xy = setupPosition(deck, i);
+            xy = setupPosition(i);
             allX[i] = xy[0];
             allY[i] = xy[1];
         }
@@ -71,20 +70,20 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
+
             if (delta >= 1 ){
                 tick();
                 updates++;
                 delta--;
             }
+
             if (!holder.getSurface().isValid()) {
                 continue;
             }
 
-
             Canvas c = holder.lockCanvas();
             render(c);
             holder.unlockCanvasAndPost(c);
-
 
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
@@ -97,25 +96,27 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     //ACTION METHOD
     public void tick(){
-
         moveCard();
 
     }
 
-    //returns the index of the touched card
+    //Moves each card individually
     public void moveCard(){
         //Get the x and y of the touch location
         float x = Game.getX();
         float y = Game.getY();
 
         //index of 100 means no card was touched
-        int index = 100;
 
-        for (int i = 0; i < 52; i++){
-            if (x > allX[i] && x < allX[i] + 81 && y > allY[i] && y < allY[i] + 81){
-                index = i;
+        //loop through all cards
+        if (!Game.isInContact()) {
+            for (int i = 0; i < 52; i++) {
+                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                    index = i;
+                }
             }
         }
+        //if a card is touched, update its position
         if (index != 100){
             allX[index] = x;
             allY[index] = y;
@@ -126,7 +127,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public void render(Canvas c){
         c.drawARGB(255, 26, 99, 1);
         for (int i = 0; i < 52; i++) {
-            c.drawBitmap(getSubImage(deck, i), allX[i], allY[i], null);
+            c.drawBitmap(getSubImage(deck, i), allX[i] - (81/2), allY[i] - (117/2), null);
         }
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
@@ -155,7 +156,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     }
 
     //Returns the x and y coordinate of the position with index pos
-    public int[] setupPosition(Deck deck, int index) {
+    public int[] setupPosition(int index) {
         int xy[] = {0,0};
         int colSpacing = 100;
         int rowSpacing = 130;
@@ -166,23 +167,21 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //first block
         if (index < 20) {
             xy[0] = (index % (rowWidth / 2)) * colSpacing + colSpacing;
-            xy[1] = (index / (rowWidth / 2)) * rowSpacing + rowSpacing;
+            xy[1] = (index / (rowWidth / 2)) * rowSpacing + 2*rowSpacing;
             //cellar left row
         } else if (index > 19 && index < 24) {
             xy[0] = (index % (rowWidth / 2)) * colSpacing + 2 * colSpacing;
-            xy[1] = (index / (rowWidth / 2)) * rowSpacing + rowSpacing;
+            xy[1] = (index / (rowWidth / 2)) * rowSpacing + 2*rowSpacing;
             //right block
         } else if (index > 23 && index < 48) {
             xy[0] = ((index - 24) % (rowWidth / 2)) * colSpacing + cardWidth + 6 * colSpacing + cardSpacing;
-            xy[1] = ((index - 24) / (rowWidth / 2)) * rowSpacing + rowSpacing;
+            xy[1] = ((index - 24) / (rowWidth / 2)) * rowSpacing + 2*rowSpacing;
             //foundation
         } else if (index > 47) {
             xy[0] = 6 * colSpacing;
-            xy[1] = (index - 48) * rowSpacing + rowSpacing / 2;
+            xy[1] = (index - 48) * rowSpacing + rowSpacing * 3 / 2;
         }
         return xy;
-        //TODO arrange them like the board
-
     }
 
     //Returns the sub image of the card from deck at position pos
@@ -193,23 +192,26 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int rank = card.getRank();
         String suit = card.getSuit();
 
-        int col = rank;
         int row = 0;
 
-        if (suit.equals("HEARTS")) {
-            row = 1;
-        } else if (suit.equals("DIAMONDS")) {
-            row = 2;
-        } else if (suit.equals("CLUBS")) {
-            row = 3;
-        } else if (suit.equals("SPADES")) {
-            row = 4;
+        switch (suit) {
+            case "HEARTS":
+                row = 1;
+                break;
+            case "DIAMONDS":
+                row = 2;
+                break;
+            case "CLUBS":
+                row = 3;
+                break;
+            case "SPADES":
+                row = 4;
+                break;
         }
 
         int y = 117 * (row - 1);
-        int x = 81 * (col - 1);
+        int x = 81 * (rank - 1);
 
-        Bitmap resized = Bitmap.createBitmap(ss, x, y, 81, 117);
-        return resized;
+        return Bitmap.createBitmap(ss, x, y, 81, 117);
     }
 }
