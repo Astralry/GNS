@@ -62,8 +62,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         final double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
-        int updates = 0;
-        int frames = 0;
         long timer = System.currentTimeMillis();
 
         while(running) {
@@ -81,13 +79,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 continue;
             }
 
+            frames++;
             Canvas c = holder.lockCanvas();
             render(c);
             holder.unlockCanvasAndPost(c);
 
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
-                System.out.println(updates + " Ticks, FPS " + frames);
                 updates = 0;
                 frames = 0;
             }
@@ -109,18 +107,22 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //index of 100 means no card was touched
 
         //loop through all cards
-        if (!Game.isInContact()) {
+//        if(!Game.isInContact()) {
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
                     index = i;
+                }else {
+                    index = 100;
                 }
             }
-        }
+//        }
+
         //if a card is touched, update its position
         if (index != 100){
             allX[index] = x;
             allY[index] = y;
         }
+
     }
 
     //DRAWING METHOD
@@ -133,7 +135,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
 
-        c.drawText(Game.getX()+ " x,y " + Game.getY(), 1000, 300, paint);
+        c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
+        c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
     }
 
     public void pause() {
