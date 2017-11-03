@@ -26,6 +26,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private float[] allX;
     private float[] allY;
+
     private int index = 100;
 
     private int updates;
@@ -98,31 +99,34 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     }
 
+    public void stack(){
+
+    }
+
     //Moves each card individually
     public void moveCard(){
         //Get the x and y of the touch location
         float x = Game.getX();
         float y = Game.getY();
+        boolean InContact = Game.isInContact();
 
         //index of 100 means no card was touched
 
-        //loop through all cards
-//        if(!Game.isInContact()) {
+        //loop through all cards to find the index of the touched card
+        if (!InContact) {
+            index = 100;
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
                     index = i;
-                }else {
-                    index = 100;
                 }
             }
-//        }
+        }
 
         //if a card is touched, update its position
         if (index != 100){
             allX[index] = x;
             allY[index] = y;
         }
-
     }
 
     //DRAWING METHOD
