@@ -30,4 +30,5 @@ public class Card {
         str += rank.printRank() + " of " + suit.printSuit();
         return str;
     }
+
 }
