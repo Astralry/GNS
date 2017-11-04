@@ -28,12 +28,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private float[] allX;
     private float[] allY;
-    private static int[] snappingX = new int[52];
-    private static int[] snappingY = new int[52];
+    private int[] snappingX = new int[52];
+    private int[] snappingY = new int[52];
     private int index = 0;
 
-    private static int colSpacing = 100;
-    private static int rowSpacing = 130;
+    private int colSpacing = 100;
+    private int rowSpacing = 130;
     private int rowWidth = 10;
     private int cardWidth = 81;
     private int cardHeight = 117;
@@ -235,7 +235,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     }
 
     // snapping to coordinates
-    public static int snapX(float x){
+    public int snapX(float x){
         int xCoordinate = 0;
         for (int i = 0; i < 48; i++){
             if (Math.abs(x - snappingX[i]) < colSpacing/2){
@@ -245,7 +245,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return snappingX[xCoordinate];
     }
 
-    public static int snapY(float y){
+    public int snapY(float y){
         int yCoordinate = 0;
         for (int i = 0; i < 48; i++){
             if (Math.abs(y - snappingY[i]) < rowSpacing/2){
