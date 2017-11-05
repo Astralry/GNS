@@ -19,6 +19,8 @@ import java.util.ArrayList;
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private Bitmap ss;
+    private int width = 81;
+    private int height = 117;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -26,7 +28,16 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private float[] allX;
     private float[] allY;
-    private int index = 100;
+    private int[] snappingX = new int[52];
+    private int[] snappingY = new int[52];
+    private int index = 0;
+
+    private int colSpacing = 100;
+    private int rowSpacing = 130;
+    private int rowWidth = 10;
+    private int cardWidth = 81;
+    private int cardHeight = 117;
+    private int cardSpacing = colSpacing - cardWidth;
 
     private int updates;
     private int frames;
@@ -45,13 +56,15 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //the positions of all the cards are contained here
         allX = new float[52];
-        allY = new float [52];
+        allY = new float[52];
 
         //setup board
         for (int i = 0; i < 52; i++){
             xy = setupPosition(i);
             allX[i] = xy[0];
             allY[i] = xy[1];
+            snappingX[i] = xy[0];
+            snappingY[i] = xy[1];
         }
     }
 
@@ -83,7 +96,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Canvas c = holder.lockCanvas();
             render(c);
             holder.unlockCanvasAndPost(c);
-
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
                 updates = 0;
@@ -104,25 +116,33 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         float x = Game.getX();
         float y = Game.getY();
 
+
         //index of 100 means no card was touched
 
         //loop through all cards
-//        if(!Game.isInContact()) {
+
+//        if(Game.isInContact()) {
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
                     index = i;
-                }else {
-                    index = 100;
                 }
             }
 //        }
+//        if (!Game.isInContact()){
+//            index = 100;
+//        }
+
 
         //if a card is touched, update its position
-        if (index != 100){
+        if (Game.isInContact()){
+
             allX[index] = x;
             allY[index] = y;
         }
-
+        else {
+            allX[index] = snapX(x);
+            allY[index] = snapY(y);
+        }
     }
 
     //DRAWING METHOD
@@ -137,6 +157,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
         c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
+
     }
 
     public void pause() {
@@ -161,11 +182,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     //Returns the x and y coordinate of the position with index pos
     public int[] setupPosition(int index) {
         int xy[] = {0,0};
-        int colSpacing = 100;
-        int rowSpacing = 130;
-        int rowWidth = 10;
-        int cardWidth = 81;
-        int cardSpacing = colSpacing - cardWidth;
 
         //first block
         if (index < 20) {
@@ -216,5 +232,46 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int x = 81 * (rank - 1);
 
         return Bitmap.createBitmap(ss, x, y, 81, 117);
+    }
+
+    // snapping to coordinates
+    public int snapX(float x){
+        int xCoordinate = 0;
+        for (int i = 0; i < 48; i++){
+            if (Math.abs(x - snappingX[i]) < colSpacing/2){
+                xCoordinate = i;
+            }
+        }
+        return snappingX[xCoordinate];
+    }
+
+    public int snapY(float y){
+        int yCoordinate = 0;
+        for (int i = 0; i < 48; i++){
+            if (Math.abs(y - snappingY[i]) < rowSpacing/2){
+                yCoordinate = i;
+            }
+        }
+        return snappingY[yCoordinate];
+    }
+
+    // getter and setter
+    public int getColSpacing() {
+        return colSpacing;
+    }
+
+    public int getRowSpacing() {
+        return rowSpacing;
+    }
+
+    public int getRowWidth() {
+        return rowWidth;
+    }
+
+    public int getCardWidth() {
+        return cardWidth;
+    }
+    public int getCardHeight() {
+        return cardHeight;
     }
 }
