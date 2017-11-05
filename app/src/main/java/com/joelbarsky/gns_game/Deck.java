@@ -29,6 +29,12 @@ public class Deck extends Board {
 
         }
     }
+
+    //returns position of card in deck
+    public int deckindex(Card c){
+        return cards.indexOf(c);
+    }
+
     //setup deck foundation
     public void setupFoundation() {
         //Foundation of the board must be of the same rank;
