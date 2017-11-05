@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
+    static Deck[] gameBoard = new Deck[15];
     private Bitmap ss;
 
     Thread t = null;
@@ -99,27 +101,52 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         moveCard();
 
     }
-
     //Moves each card individually
     public void moveCard(){
+
         //Get the x and y of the touch location
-        float x = Game.getX();
-        float y = Game.getY();
 
-        //index of 100 means no card was touched
+            float x = Game.getX();
+            float y = Game.getY();
 
-        //loop through all cards
-        if (!Game.isInContact()) {
-            for (int i = 0; i < 52; i++) {
-                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
-                    index = i;
+            //index of 100 means no card was touched
+
+            //loop through all cards
+            if (!Game.isInContact()) {
+                for (int i = 0; i < 52; i++) {
+                    if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                        index = i;
+                    }
                 }
             }
+            //if a card is touched, update its position
+            if (index != 100) {
+                if (isMoveable()){
+                    allX[index] = x;
+                    allY[index] = y;
+                }
+            }
+    }
+
+    public void setupGameBoard(){
+        for (int i=0;i<15;i++){
+            gameBoard[i] = new Deck();
         }
-        //if a card is touched, update its position
-        if (index != 100){
-            allX[index] = x;
-            allY[index] = y;
+        for (int i=0; i<52; i++) {
+            Card c = deck.getCards().get(i);
+            //left side
+            System.out.println(i);
+            if (i < 24) {
+                gameBoard[i/5].add(c);
+            }
+            //foundation
+            else if (i > 47) {
+                gameBoard[i - 37].add(c);
+            }
+            //rightside, rightmost card is position 0
+            else {
+                gameBoard[(i - 24) / 5 + 5].addAt(0,c);
+            }
         }
     }
 
@@ -183,7 +210,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         return xy;
     }
-
+    
     //Returns the sub image of the card from deck at position pos
     public Bitmap getSubImage(Deck deck, int pos) {
         ArrayList<Card> cards = deck.getCards();
@@ -214,4 +241,57 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         return Bitmap.createBitmap(ss, x, y, 81, 117);
     }
+    public boolean isMoveable() {
+        //Get card at location on board
+        Card card = returnCard();
+        int index = findCard(card);
+        return !(inCellar(card) && !cellarOpen())&&!inStack(card) && gameBoard[index].deckindex(card) == 0;
+    }
+    //true if touching stack card
+    public boolean inStack(Card c){
+        int i = findCard(c);
+        return i > 10;
+    }
+    //True if card is in cellar
+    public boolean inCellar(Card c){
+        int i = findCard(c);
+        return i ==10;
+    }
+    //true if bottom right OR bottom left pile is empty
+    public boolean cellarOpen(){
+        return gameBoard[4].isEmpty() || gameBoard[9].isEmpty();
+    }
+    //returns pile with card
+    public int findCard (Card c){
+        int i = 0;
+
+        while (i<16){
+            if (gameBoard[i].contains(c)){
+                break;
+            }
+            else{
+                i++;
+            }
+        }
+        return i;
+    }
+    public Card returnCard(){
+        deck = Game.getDeck();
+        //Get the x and y of the touch location
+        float x = Game.getX();
+        float y = Game.getY();
+
+        //index of 100 means no card was touched
+
+        //loop through all cards
+        if (!Game.isInContact()) {
+            for (int i = 0; i < 52; i++) {
+                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                    index = i;
+                }
+            }
+        }
+        return deck.getCard(index);
+    }
+
 }

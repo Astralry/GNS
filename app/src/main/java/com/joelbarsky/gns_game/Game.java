@@ -27,6 +27,7 @@ public class Game extends Activity implements OnTouchListener {
         deck.populate();
         deck.shuffle();
         deck.setupFoundation();
+        v.setupGameBoard();
     }
 
 
