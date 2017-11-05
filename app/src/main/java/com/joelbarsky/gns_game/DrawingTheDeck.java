@@ -20,6 +20,9 @@ import java.util.ArrayList;
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private Bitmap ss;
+    private Bitmap hint;
+    private Bitmap undo;
+    private Bitmap save;
     private int width = 81;
     private int height = 117;
 
@@ -50,6 +53,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
+        hint = BitmapFactory.decodeResource(getResources(), R.drawable.hint);
+        undo = BitmapFactory.decodeResource(getResources(), R.drawable.undo);
+        save = BitmapFactory.decodeResource(getResources(),R.drawable.save);
         holder = getHolder();
 
         //get the deck
@@ -152,8 +158,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
 
-        c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
-        c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
+        c.drawBitmap(hint, 1400, 200, null);
+        c.drawBitmap(undo, 1400, 320, null);
+        c.drawBitmap(save,1400,440,null);
+
+//        c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
+//        c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
 
     }
 
