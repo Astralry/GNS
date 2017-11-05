@@ -27,6 +27,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private static int undoWidth = 117;
     private static int undoHeight = 117;
 
+    private int width = 81;
+    private int height = 117;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -36,7 +38,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private float[] allY;
     private int[] snappingX = new int[52];
     private int[] snappingY = new int[52];
-    private int index = 0;
 
     private int colSpacing = 100;
     private int rowSpacing = 130;
@@ -45,11 +46,11 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private int cardHeight = 117;
     private int cardSpacing = colSpacing - cardWidth;
 
+    private int index = 100;
+
     private int updates;
     private int frames;
     Deck deck;
-
-
     public int xy[] = {0,0};
 
     public DrawingTheDeck(Context context) {
@@ -124,33 +125,28 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //Get the x and y of the touch location
         float x = Game.getX();
         float y = Game.getY();
+        boolean inContact = Game.isInContact();
 
 
         //index of 100 means no card was touched
 
-        //loop through all cards
-
-//        if(Game.isInContact()) {
+        //loop through all cards to find the index of the touched card
+        if (!inContact) {
+            index = 100;
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
                     index = i;
                 }
             }
-//        }
-//        if (!Game.isInContact()){
-//            index = 100;
-//        }
-
+        }
 
         //if a card is touched, update its position
-        if (Game.isInContact()){
-
+        if (index != 100 && inContact){
             allX[index] = x;
             allY[index] = y;
-        }
-        else {
-            allX[index] = snapX(x);
-            allY[index] = snapY(y);
+        } else if (index != 100){
+            allX[index] = snap(x, y)[0];
+            allY[index] = snap(x, y)[1];
         }
     }
 
@@ -167,7 +163,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
         c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
-
     }
 
     public void pause() {
@@ -244,25 +239,25 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return Bitmap.createBitmap(ss, x, y, 81, 117);
     }
 
-    // snapping to coordinates
-    public int snapX(float x){
-        int xCoordinate = 0;
-        for (int i = 0; i < 52; i++){
-            if (Math.abs(x - snappingX[i]) < colSpacing/2){
-                xCoordinate = i;
-            }
-        }
-        return snappingX[xCoordinate];
-    }
 
-    public int snapY(float y){
-        int yCoordinate = 0;
+    public float[] snap(float x, float y){
+        int index = 0;
+        float[] xy = {0,0};
+        double dist = 0;
+        double minDist = 10000;
+
         for (int i = 0; i < 52; i++){
-            if (Math.abs(y - snappingY[i]) < rowSpacing/2){
-                yCoordinate = i;
+            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+            if (dist < minDist){
+                minDist = dist;
+                index = i;
             }
         }
-        return snappingY[yCoordinate];
+
+        xy[0] = snappingX[index];
+        xy[1] = snappingY[index];
+
+        return xy;
     }
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
