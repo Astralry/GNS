@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.FloatMath;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private Bitmap ss;
+    private int width = 81;
+    private int height = 117;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -26,6 +29,15 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private float[] allX;
     private float[] allY;
+    private int[] snappingX = new int[52];
+    private int[] snappingY = new int[52];
+
+    private int colSpacing = 100;
+    private int rowSpacing = 130;
+    private int rowWidth = 10;
+    private int cardWidth = 81;
+    private int cardHeight = 117;
+    private int cardSpacing = colSpacing - cardWidth;
 
     private int index = 100;
 
@@ -46,13 +58,15 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //the positions of all the cards are contained here
         allX = new float[52];
-        allY = new float [52];
+        allY = new float[52];
 
         //setup board
         for (int i = 0; i < 52; i++){
             xy = setupPosition(i);
             allX[i] = xy[0];
             allY[i] = xy[1];
+            snappingX[i] = xy[0];
+            snappingY[i] = xy[1];
         }
     }
 
@@ -110,6 +124,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         float y = Game.getY();
         boolean inContact = Game.isInContact();
 
+
         //index of 100 means no card was touched
 
         //loop through all cards to find the index of the touched card
@@ -126,6 +141,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         if (index != 100 && inContact){
             allX[index] = x;
             allY[index] = y;
+        } else if (index != 100){
+            allX[index] = snap(x, y)[0];
+            allY[index] = snap(x, y)[1];
         }
     }
 
@@ -141,6 +159,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
         c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
+
     }
 
     public void pause() {
@@ -165,11 +184,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     //Returns the x and y coordinate of the position with index pos
     public int[] setupPosition(int index) {
         int xy[] = {0,0};
-        int colSpacing = 100;
-        int rowSpacing = 130;
-        int rowWidth = 10;
-        int cardWidth = 81;
-        int cardSpacing = colSpacing - cardWidth;
 
         //first block
         if (index < 20) {
@@ -220,5 +234,88 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int x = 81 * (rank - 1);
 
         return Bitmap.createBitmap(ss, x, y, 81, 117);
+    }
+
+//    public boolean isMoveable(int index){
+//        boolean isMoveable = false;
+//        int row = 0;
+//        boolean left = true;
+//        int innerIndex;
+//
+//        //find which row the index is in
+//        if (index < 24){
+//            row = index / 5;
+//            left = true;
+//        }else if (index > 23 && index < 48){
+//            row = (index - 24) /5 + 5;
+//            left = false;
+//        } else if (index > 47 && index < 52){
+//            return isMoveable;
+//        }
+//
+//        innerIndex = findInnerIndex(row);
+//
+//        if (left) {
+//            for (int i = innerIndex; i > i - 5; i--) {
+//                if (allX[i] == ){
+//
+//                }
+//            }
+//        }else if (!left){
+//            for (int i = innerIndex; i < i + 5; i++) {
+//
+//            }
+//        }
+//
+//
+//        return isMoveable;
+//    }
+
+    // 0 =< row =< 9
+    public int findInnerIndex(int row){
+        int innerIndex = 0;
+        switch (row){
+            case(0):
+                innerIndex = 4;
+            case(1):
+                innerIndex = 9;
+            case(2):
+                innerIndex = 14;
+            case(3):
+                innerIndex = 19;
+            case(4):
+                innerIndex = 23;
+            case(5):
+                innerIndex = 24;
+            case(6):
+                innerIndex = 29;
+            case(7):
+                innerIndex = 34;
+            case(8):
+                innerIndex = 39;
+            case(9):
+                innerIndex = 44;
+        }
+        return innerIndex;
+    }
+
+    public float[] snap(float x, float y){
+        int index = 0;
+        float[] xy = {0,0};
+        double dist = 0;
+        double minDist = 10000;
+
+        for (int i = 0; i < 52; i++){
+            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+            if (dist < minDist){
+                minDist = dist;
+                index = i;
+            }
+        }
+
+        xy[0] = snappingX[index];
+        xy[1] = snappingY[index];
+
+        return xy;
     }
 }
