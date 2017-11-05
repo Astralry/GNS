@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.graphics.Matrix;
 
 import java.util.ArrayList;
 
@@ -19,8 +20,13 @@ import java.util.ArrayList;
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private Bitmap ss;
-    private int width = 81;
-    private int height = 117;
+    private Bitmap undo;
+    private static int undoXCoordinate = 100;
+    private static int undoYCoordinate = 10;
+
+    private static int undoWidth = 117;
+    private static int undoHeight = 117;
+
 
     Thread t = null;
     SurfaceHolder holder;
@@ -42,6 +48,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private int updates;
     private int frames;
     Deck deck;
+
+
     public int xy[] = {0,0};
 
     public DrawingTheDeck(Context context) {
@@ -49,6 +57,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
+        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
         holder = getHolder();
 
         //get the deck
@@ -148,6 +157,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     //DRAWING METHOD
     public void render(Canvas c){
         c.drawARGB(255, 26, 99, 1);
+        c.drawBitmap(undo, undoXCoordinate, undoYCoordinate, null);
         for (int i = 0; i < 52; i++) {
             c.drawBitmap(getSubImage(deck, i), allX[i] - (81/2), allY[i] - (117/2), null);
         }
@@ -237,7 +247,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     // snapping to coordinates
     public int snapX(float x){
         int xCoordinate = 0;
-        for (int i = 0; i < 48; i++){
+        for (int i = 0; i < 52; i++){
             if (Math.abs(x - snappingX[i]) < colSpacing/2){
                 xCoordinate = i;
             }
@@ -247,12 +257,29 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     public int snapY(float y){
         int yCoordinate = 0;
-        for (int i = 0; i < 48; i++){
+        for (int i = 0; i < 52; i++){
             if (Math.abs(y - snappingY[i]) < rowSpacing/2){
                 yCoordinate = i;
             }
         }
         return snappingY[yCoordinate];
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 
     // getter and setter
@@ -271,7 +298,24 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public int getCardWidth() {
         return cardWidth;
     }
+
     public int getCardHeight() {
         return cardHeight;
+    }
+
+    public static int getUndoXCoordinate() {
+        return undoXCoordinate;
+    }
+
+    public static int getUndoYCoordinate() {
+        return undoYCoordinate;
+    }
+
+    public static int getUndoWidth() {
+        return undoWidth;
+    }
+
+    public static int getUndoHeight() {
+        return undoHeight;
     }
 }
