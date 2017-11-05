@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.FloatMath;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -115,33 +116,29 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //Get the x and y of the touch location
         float x = Game.getX();
         float y = Game.getY();
+        boolean inContact = Game.isInContact();
+
 
 
         //index of 100 means no card was touched
 
-        //loop through all cards
-
-//        if(Game.isInContact()) {
+        //loop through all cards to find the index of the touched card
+        if (!inContact) {
+            index = 100;
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
                     index = i;
                 }
             }
-//        }
-//        if (!Game.isInContact()){
-//            index = 100;
-//        }
-
+        }
 
         //if a card is touched, update its position
-        if (Game.isInContact()){
-
+        if (index != 100 && inContact){
             allX[index] = x;
             allY[index] = y;
-        }
-        else {
-            allX[index] = snapX(x);
-            allY[index] = snapY(y);
+        } else if (index != 100){
+            allX[index] = snap(x, y)[0];
+            allY[index] = snap(x, y)[1];
         }
     }
 
@@ -234,44 +231,23 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return Bitmap.createBitmap(ss, x, y, 81, 117);
     }
 
-    // snapping to coordinates
-    public int snapX(float x){
-        int xCoordinate = 0;
-        for (int i = 0; i < 48; i++){
-            if (Math.abs(x - snappingX[i]) < colSpacing/2){
-                xCoordinate = i;
+    public float[] snap(float x, float y){
+        int index = 0;
+        float[] xy = {0,0};
+        double dist = 0;
+        double minDist = 10000;
+
+        for (int i = 0; i < 52; i++){
+            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+            if (dist < minDist){
+                minDist = dist;
+                index = i;
             }
         }
-        return snappingX[xCoordinate];
-    }
 
-    public int snapY(float y){
-        int yCoordinate = 0;
-        for (int i = 0; i < 48; i++){
-            if (Math.abs(y - snappingY[i]) < rowSpacing/2){
-                yCoordinate = i;
-            }
-        }
-        return snappingY[yCoordinate];
-    }
+        xy[0] = snappingX[index];
+        xy[1] = snappingY[index];
 
-    // getter and setter
-    public int getColSpacing() {
-        return colSpacing;
-    }
-
-    public int getRowSpacing() {
-        return rowSpacing;
-    }
-
-    public int getRowWidth() {
-        return rowWidth;
-    }
-
-    public int getCardWidth() {
-        return cardWidth;
-    }
-    public int getCardHeight() {
-        return cardHeight;
+        return xy;
     }
 }

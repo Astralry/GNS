@@ -11,6 +11,8 @@ public class Game extends Activity implements OnTouchListener {
 
     private static float x, y = 0;
     private static boolean inContact = false;
+    private static boolean touchDown = false;
+
 
 
     private static Deck deck = new Deck();
@@ -36,7 +38,7 @@ public class Game extends Activity implements OnTouchListener {
 
         switch (event.getAction()) {
             case (MotionEvent.ACTION_DOWN):
-                inContact = true;
+//                inContact = true;
                 x = event.getX();
                 y = event.getY();
                 break;
