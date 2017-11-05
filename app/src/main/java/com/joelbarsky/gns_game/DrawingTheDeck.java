@@ -108,12 +108,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //Get the x and y of the touch location
         float x = Game.getX();
         float y = Game.getY();
-        boolean InContact = Game.isInContact();
+        boolean inContact = Game.isInContact();
 
         //index of 100 means no card was touched
 
         //loop through all cards to find the index of the touched card
-        if (!InContact) {
+        if (!inContact) {
             index = 100;
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
@@ -123,7 +123,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
 
         //if a card is touched, update its position
-        if (index != 100){
+        if (index != 100 && inContact){
             allX[index] = x;
             allY[index] = y;
         }
