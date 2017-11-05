@@ -251,4 +251,3 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return xy;
     }
 }
-}
