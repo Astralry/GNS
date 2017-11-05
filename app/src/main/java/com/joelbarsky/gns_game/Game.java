@@ -11,6 +11,9 @@ public class Game extends Activity implements OnTouchListener {
 
     private static float x, y = 0;
     private static boolean inContact = false;
+    private static boolean touchDown = false;
+
+
 
     private static Deck deck = new Deck();
     DrawingTheDeck v;
@@ -33,9 +36,10 @@ public class Game extends Activity implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
         switch (event.getAction()) {
             case (MotionEvent.ACTION_DOWN):
-                inContact = true;
+//                inContact = true;
                 x = event.getX();
                 y = event.getY();
                 break;
@@ -65,6 +69,7 @@ public class Game extends Activity implements OnTouchListener {
         super.onStart();
     }
 
+    // return to home
     public void home_screen(View v) {
         Intent toHome = new Intent(v.getContext(), Home.class);
         startActivityForResult(toHome, 0);
@@ -87,4 +92,6 @@ public class Game extends Activity implements OnTouchListener {
     public static boolean isInContact() {
         return inContact;
     }
+
+
 }

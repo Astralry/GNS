@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.FloatMath;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -21,6 +22,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     static Deck[] gameBoard = new Deck[15];
     private Bitmap ss;
+    private int width = 81;
+    private int height = 117;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -28,7 +31,16 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private float[] allX;
     private float[] allY;
-    private int index = 100;
+    private int[] snappingX = new int[52];
+    private int[] snappingY = new int[52];
+    private int index = 0;
+
+    private int colSpacing = 100;
+    private int rowSpacing = 130;
+    private int rowWidth = 10;
+    private int cardWidth = 81;
+    private int cardHeight = 117;
+    private int cardSpacing = colSpacing - cardWidth;
 
     private int updates;
     private int frames;
@@ -47,13 +59,15 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //the positions of all the cards are contained here
         allX = new float[52];
-        allY = new float [52];
+        allY = new float[52];
 
         //setup board
         for (int i = 0; i < 52; i++){
             xy = setupPosition(i);
             allX[i] = xy[0];
             allY[i] = xy[1];
+            snappingX[i] = xy[0];
+            snappingY[i] = xy[1];
         }
     }
 
@@ -83,13 +97,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 continue;
             }
 
+            frames++;
             Canvas c = holder.lockCanvas();
             render(c);
             holder.unlockCanvasAndPost(c);
-
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
-                System.out.println(updates + " Ticks, FPS " + frames);
                 updates = 0;
                 frames = 0;
             }
@@ -101,33 +114,37 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         moveCard();
 
     }
+
     //Moves each card individually
     public void moveCard(){
-
         //Get the x and y of the touch location
+        float x = Game.getX();
+        float y = Game.getY();
+        boolean inContact = Game.isInContact();
 
-            float x = Game.getX();
-            float y = Game.getY();
 
-            //index of 100 means no card was touched
 
-            //loop through all cards
-            if (!Game.isInContact()) {
-                for (int i = 0; i < 52; i++) {
-                    if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
-                        index = i;
-                    }
+        //index of 100 means no card was touched
+
+        //loop through all cards to find the index of the touched card
+        if (!inContact) {
+            index = 100;
+            for (int i = 0; i < 52; i++) {
+                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                    index = i;
                 }
             }
-            //if a card is touched, update its position
-            if (index != 100) {
-                if (isMoveable()){
-                    allX[index] = x;
-                    allY[index] = y;
-                }
-            }
+        }
+
+        //if a card is touched, update its position
+        if (index != 100 && inContact&&isMoveable()){
+            allX[index] = x;
+            allY[index] = y;
+        } else if (index != 100){
+            allX[index] = snap(x, y)[0];
+            allY[index] = snap(x, y)[1];
+        }
     }
-
     public void setupGameBoard(){
         for (int i=0;i<15;i++){
             gameBoard[i] = new Deck();
@@ -160,7 +177,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
 
-        c.drawText(Game.getX()+ " x,y " + Game.getY(), 1000, 300, paint);
+        c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
+        c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
+
     }
 
     public void pause() {
@@ -185,11 +204,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     //Returns the x and y coordinate of the position with index pos
     public int[] setupPosition(int index) {
         int xy[] = {0,0};
-        int colSpacing = 100;
-        int rowSpacing = 130;
-        int rowWidth = 10;
-        int cardWidth = 81;
-        int cardSpacing = colSpacing - cardWidth;
 
         //first block
         if (index < 20) {
@@ -240,6 +254,26 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int x = 81 * (rank - 1);
 
         return Bitmap.createBitmap(ss, x, y, 81, 117);
+    }
+
+    public float[] snap(float x, float y){
+        int index = 0;
+        float[] xy = {0,0};
+        double dist = 0;
+        double minDist = 10000;
+
+        for (int i = 0; i < 52; i++){
+            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+            if (dist < minDist){
+                minDist = dist;
+                index = i;
+            }
+        }
+
+        xy[0] = snappingX[index];
+        xy[1] = snappingY[index];
+
+        return xy;
     }
     public boolean isMoveable() {
         //Get card at location on board
@@ -295,3 +329,4 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     }
 
 }
+
