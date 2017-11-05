@@ -140,7 +140,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         if (index != 100 && inContact&&isMoveable()){
             allX[index] = x;
             allY[index] = y;
-        } else if (index != 100){
+        } else if (index != 100&&isMoveable()){
             allX[index] = snap(x, y)[0];
             allY[index] = snap(x, y)[1];
         }
@@ -259,7 +259,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public float[] snap(float x, float y){
         int index = 0;
         float[] xy = {0,0};
-        double dist = 0;
+        double dist = 0.0;
         double minDist = 10000;
 
         for (int i = 0; i < 52; i++){
@@ -327,6 +327,5 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         return deck.getCard(index);
     }
-
 }
 
