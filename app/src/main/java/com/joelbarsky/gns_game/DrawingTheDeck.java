@@ -210,7 +210,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         return xy;
     }
-    
+
     //Returns the sub image of the card from deck at position pos
     public Bitmap getSubImage(Deck deck, int pos) {
         ArrayList<Card> cards = deck.getCards();

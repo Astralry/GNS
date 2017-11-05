@@ -33,20 +33,19 @@ public class Game extends Activity implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-
         switch (event.getAction()) {
             case (MotionEvent.ACTION_DOWN):
-                inContact = false;
+                inContact = true;
                 x = event.getX();
                 y = event.getY();
                 break;
             case (MotionEvent.ACTION_MOVE):
-                inContact = false;
+                inContact = true;
                 x = event.getX();
                 y = event.getY();
                 break;
             case (MotionEvent.ACTION_UP):
-                inContact = true;
+                inContact = false;
                 break;
         }
         return true;
