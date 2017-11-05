@@ -31,6 +31,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private float[] allY;
     private int[] snappingX = new int[52];
     private int[] snappingY = new int[52];
+    private int index = 0;
 
     private int colSpacing = 100;
     private int rowSpacing = 130;
@@ -38,8 +39,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private int cardWidth = 81;
     private int cardHeight = 117;
     private int cardSpacing = colSpacing - cardWidth;
-
-    private int index = 100;
 
     private int updates;
     private int frames;
@@ -98,7 +97,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Canvas c = holder.lockCanvas();
             render(c);
             holder.unlockCanvasAndPost(c);
-
             if(System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
                 updates = 0;
@@ -113,16 +111,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     }
 
-    public void stack(){
-
-    }
-
     //Moves each card individually
     public void moveCard(){
         //Get the x and y of the touch location
         float x = Game.getX();
         float y = Game.getY();
         boolean inContact = Game.isInContact();
+
 
 
         //index of 100 means no card was touched
@@ -236,69 +231,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return Bitmap.createBitmap(ss, x, y, 81, 117);
     }
 
-//    public boolean isMoveable(int index){
-//        boolean isMoveable = false;
-//        int row = 0;
-//        boolean left = true;
-//        int innerIndex;
-//
-//        //find which row the index is in
-//        if (index < 24){
-//            row = index / 5;
-//            left = true;
-//        }else if (index > 23 && index < 48){
-//            row = (index - 24) /5 + 5;
-//            left = false;
-//        } else if (index > 47 && index < 52){
-//            return isMoveable;
-//        }
-//
-//        innerIndex = findInnerIndex(row);
-//
-//        if (left) {
-//            for (int i = innerIndex; i > i - 5; i--) {
-//                if (allX[i] == ){
-//
-//                }
-//            }
-//        }else if (!left){
-//            for (int i = innerIndex; i < i + 5; i++) {
-//
-//            }
-//        }
-//
-//
-//        return isMoveable;
-//    }
-
-    // 0 =< row =< 9
-    public int findInnerIndex(int row){
-        int innerIndex = 0;
-        switch (row){
-            case(0):
-                innerIndex = 4;
-            case(1):
-                innerIndex = 9;
-            case(2):
-                innerIndex = 14;
-            case(3):
-                innerIndex = 19;
-            case(4):
-                innerIndex = 23;
-            case(5):
-                innerIndex = 24;
-            case(6):
-                innerIndex = 29;
-            case(7):
-                innerIndex = 34;
-            case(8):
-                innerIndex = 39;
-            case(9):
-                innerIndex = 44;
-        }
-        return innerIndex;
-    }
-
     public float[] snap(float x, float y){
         int index = 0;
         float[] xy = {0,0};
@@ -318,4 +250,5 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         return xy;
     }
+}
 }

@@ -14,6 +14,7 @@ public class Game extends Activity implements OnTouchListener {
     private static boolean touchDown = false;
 
 
+
     private static Deck deck = new Deck();
     DrawingTheDeck v;
 
