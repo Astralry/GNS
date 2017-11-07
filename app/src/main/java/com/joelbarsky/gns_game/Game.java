@@ -6,17 +6,18 @@ import android.os.Bundle;
 import android.content.*;
 import android.view.*;
 import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
+import android.graphics.Bitmap;
 
 public class Game extends Activity implements OnTouchListener {
 
     private static float x, y = 0;
     private static boolean inContact = false;
-    private static boolean touchDown = false;
-
-
+    private static boolean savingStep = true;
 
     private static Deck deck = new Deck();
     DrawingTheDeck v;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,24 +37,32 @@ public class Game extends Activity implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-
-        switch (event.getAction()) {
-            case (MotionEvent.ACTION_DOWN):
-//                inContact = true;
-                x = event.getX();
-                y = event.getY();
-                break;
-            case (MotionEvent.ACTION_MOVE):
-                inContact = true;
-                x = event.getX();
-                y = event.getY();
-                break;
-            case (MotionEvent.ACTION_UP):
-                inContact = false;
-                break;
+        // for undo button action
+        if (Math.abs(event.getX() - DrawingTheDeck.getUndoXCoordinate()) < DrawingTheDeck.getUndoWidth()
+                && Math.abs(event.getY() - DrawingTheDeck.getUndoYCoordinate()) < DrawingTheDeck.getUndoHeight()){
+            //x =
+        }
+        // for moving the cards
+        else {
+            switch (event.getAction()) {
+                case (MotionEvent.ACTION_DOWN):
+                    x = event.getX();
+                    y = event.getY();
+                    break;
+                case (MotionEvent.ACTION_MOVE):
+                    inContact = true;
+                    x = event.getX();
+                    y = event.getY();
+                    break;
+                case (MotionEvent.ACTION_UP):
+                    savingStep = true;
+                    inContact = false;
+                    break;
+            }
         }
         return true;
     }
+
 
     protected void onPause() {
         super.onPause();
@@ -93,5 +102,12 @@ public class Game extends Activity implements OnTouchListener {
         return inContact;
     }
 
+    public static boolean isSavingStep() {
+        return savingStep;
+    }
+
+    public static void setSavingStep(boolean savingStep) {
+        Game.savingStep = savingStep;
+    }
 
 }

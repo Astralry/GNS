@@ -359,6 +359,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public static int getUndoHeight() {
         return undoHeight;
     }
+    
     public boolean isMoveable() {
         //Get card at location on board
         Card card = returnCard();
