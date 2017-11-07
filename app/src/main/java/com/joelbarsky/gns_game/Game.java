@@ -14,6 +14,7 @@ public class Game extends Activity implements OnTouchListener {
     private static float x, y = 0;
     private static boolean inContact = false;
     private static boolean savingStep = true;
+    private static boolean inUndo = false;
 
     private static Deck deck = new Deck();
     DrawingTheDeck v;
@@ -38,28 +39,36 @@ public class Game extends Activity implements OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // for undo button action
-        if (Math.abs(event.getX() - DrawingTheDeck.getUndoXCoordinate()) < DrawingTheDeck.getUndoWidth()
-                && Math.abs(event.getY() - DrawingTheDeck.getUndoYCoordinate()) < DrawingTheDeck.getUndoHeight()){
-            //x =
-        }
+
         // for moving the cards
-        else {
+
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
-                    x = event.getX();
-                    y = event.getY();
+                    if (Math.abs(event.getX() - DrawingTheDeck.getUndoXCoordinate()) < DrawingTheDeck.getUndoWidth()
+                            && Math.abs(event.getY() - DrawingTheDeck.getUndoYCoordinate()) < DrawingTheDeck.getUndoHeight()){
+                        inUndo = true;
+                        System.out.println("UNdo");
+                    }
+                    else {
+                        inUndo = false;
+                        x = event.getX();
+                        y = event.getY();
+                    }
                     break;
                 case (MotionEvent.ACTION_MOVE):
+
+                    inUndo = false;
                     inContact = true;
                     x = event.getX();
                     y = event.getY();
+
                     break;
                 case (MotionEvent.ACTION_UP):
                     savingStep = true;
                     inContact = false;
                     break;
             }
-        }
+
         return true;
     }
 
@@ -110,4 +119,11 @@ public class Game extends Activity implements OnTouchListener {
         Game.savingStep = savingStep;
     }
 
+    public static void setInUndo(boolean inUndo) {
+        Game.inUndo = inUndo;
+    }
+    public static boolean isInUndo() {
+
+        return inUndo;
+    }
 }
