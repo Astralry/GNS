@@ -20,15 +20,16 @@ import java.util.ArrayList;
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     private Bitmap ss;
+
     private Bitmap undo;
     private static int undoXCoordinate = 100;
     private static int undoYCoordinate = 10;
-
     private static int undoWidth = 117;
     private static int undoHeight = 117;
-
-    private int width = 81;
-    private int height = 117;
+    private static int undoIndex = 0;
+    private static int maxUndoStep = 5;
+    private static float[] undoX = new float[maxUndoStep];
+    private static float[] undoY = new float[maxUndoStep];
 
     Thread t = null;
     SurfaceHolder holder;
@@ -51,6 +52,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private int updates;
     private int frames;
     Deck deck;
+
+
     public int xy[] = {0,0};
 
     public DrawingTheDeck(Context context) {
@@ -140,8 +143,26 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
         }
 
-        //if a card is touched, update its position
+        //if a card is touched, update its position and put location in undo
         if (index != 100 && inContact){
+            // 0 position is the oldest undo, 4th is the newest
+            if (Game.isSavingStep()) {
+                if (undoIndex > maxUndoStep-1){
+                    for (int i = 0; i < maxUndoStep-1; i++){
+                        undoX[i] = undoX[i+1];
+                        undoY[i] = undoY[i+1];
+                    }
+                    undoIndex = maxUndoStep-1;
+                    undoX[undoIndex] = allX[index];
+                    undoY[undoIndex] = allY[index];
+                }
+                else{
+                    undoX[undoIndex] = allX[index];
+                    undoY[undoIndex] = allY[index];
+                    undoIndex++;
+                }
+                Game.setSavingStep(false);
+            }
             allX[index] = x;
             allY[index] = y;
         } else if (index != 100){
