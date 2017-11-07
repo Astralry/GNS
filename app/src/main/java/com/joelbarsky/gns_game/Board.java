@@ -26,8 +26,18 @@ public class Board {
         cards.clear();
     }
 
+    public void addAt(int i, Card card){cards.add(i,card);
+    }
     public void add(Card card){
         cards.add(card);
+    }
+
+
+    public Card getCard(int i){ return cards.get(i);
+    }
+    public boolean isEmpty(){ return cards.isEmpty();}
+
+    public boolean contains(Card c){ return cards.contains(c);
     }
 
     public String printDeck(){

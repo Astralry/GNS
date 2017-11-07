@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Matrix;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 public class DrawingTheDeck extends SurfaceView implements Runnable{
 
+    static Deck[] gameBoard = new Deck[15];
     private Bitmap ss;
 
     private Bitmap undo;
@@ -88,6 +90,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         final double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
+        int updates = 0;
+        int frames = 0;
         long timer = System.currentTimeMillis();
 
         while(running) {
@@ -143,8 +147,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
         }
 
-        //if a card is touched, update its position and put location in undo
-        if (index != 100 && inContact){
+        //if a card is touched, update its position
+        if (index != 100 && inContact&&isMoveable()){
             // 0 position is the oldest undo, 4th is the newest
             if (Game.isSavingStep()) {
                 if (undoIndex > maxUndoStep-1){
@@ -165,9 +169,30 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
             allX[index] = x;
             allY[index] = y;
-        } else if (index != 100){
+        } else if (index != 100&&isMoveable()){
             allX[index] = snap(x, y)[0];
             allY[index] = snap(x, y)[1];
+        }
+    }
+    public void setupGameBoard(){
+        for (int i=0;i<15;i++){
+            gameBoard[i] = new Deck();
+        }
+        for (int i=0; i<52; i++) {
+            Card c = deck.getCards().get(i);
+            //left side
+            System.out.println(i);
+            if (i < 24) {
+                gameBoard[i/5].add(c);
+            }
+            //foundation
+            else if (i > 47) {
+                gameBoard[i - 37].add(c);
+            }
+            //rightside, rightmost card is position 0
+            else {
+                gameBoard[(i - 24) / 5 + 5].addAt(0,c);
+            }
         }
     }
 
@@ -264,7 +289,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public float[] snap(float x, float y){
         int index = 0;
         float[] xy = {0,0};
-        double dist = 0;
+        double dist = 0.0;
         double minDist = 10000;
 
         for (int i = 0; i < 52; i++){
@@ -334,4 +359,57 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public static int getUndoHeight() {
         return undoHeight;
     }
+    public boolean isMoveable() {
+        //Get card at location on board
+        Card card = returnCard();
+        int index = findCard(card);
+        return !(inCellar(card) && !cellarOpen())&&!inStack(card) && gameBoard[index].deckindex(card) == 0;
+    }
+    //true if touching stack card
+    public boolean inStack(Card c){
+        int i = findCard(c);
+        return i > 10;
+    }
+    //True if card is in cellar
+    public boolean inCellar(Card c){
+        int i = findCard(c);
+        return i ==10;
+    }
+    //true if bottom right OR bottom left pile is empty
+    public boolean cellarOpen(){
+        return gameBoard[4].isEmpty() || gameBoard[9].isEmpty();
+    }
+    //returns pile with card
+    public int findCard (Card c){
+        int i = 0;
+
+        while (i<16){
+            if (gameBoard[i].contains(c)){
+                break;
+            }
+            else{
+                i++;
+            }
+        }
+        return i;
+    }
+    public Card returnCard(){
+        deck = Game.getDeck();
+        //Get the x and y of the touch location
+        float x = Game.getX();
+        float y = Game.getY();
+
+        //index of 100 means no card was touched
+
+        //loop through all cards
+        if (!Game.isInContact()) {
+            for (int i = 0; i < 52; i++) {
+                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                    index = i;
+                }
+            }
+        }
+        return deck.getCard(index);
+    }
 }
+
