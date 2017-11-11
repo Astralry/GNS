@@ -23,6 +23,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     static Deck[] gameBoard = new Deck[15];
     private Bitmap ss;
 
+    // for undo function
     private Bitmap undo;
     private static int undoXCoordinate = 100;
     private static int undoYCoordinate = 10;
@@ -30,7 +31,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private static int undoHeight = 117;
     private static int undoIndex = 0;
     private static int[] undoCard = new int[52];
-    private static int maxUndoStep = 5;
+    private static int maxUndoStep = 10;
     private static float[] undoX = new float[maxUndoStep];
     private static float[] undoY = new float[maxUndoStep];
 
@@ -150,46 +151,14 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         // if the undo button is touched, revert step
         if (Game.isInUndo()) {
-            undoIndex--;
-            if (undoIndex > maxUndoStep-1){
-                undoIndex = maxUndoStep-1;
-            }
-            else if (undoIndex < 0){
-                undoIndex = 0;
-            }
-
-            if (undoCard[undoIndex] != 100) {
-                allX[undoCard[undoIndex]] = undoX[undoIndex];
-                allY[undoCard[undoIndex]] = undoY[undoIndex];
-                undoCard[undoIndex] = 100;
-                undoX[undoIndex] = 0;
-                undoY[undoIndex] = 0;
-                Game.setInUndo(false);
-            }
-            System.out.println("undo undo index: "+undoIndex);
+            undo();
         }
 
         //if a card is touched, update its position
         if (index != 100 && inContact&&isMoveable()){
             // 0 position is the oldest undo, 4th is the newest
             if (Game.isSavingStep()) {
-                System.out.println("saving step undo index: "+undoIndex);
-                if (undoIndex < 0){
-                    undoIndex = 0;
-                }
-                if (undoIndex > maxUndoStep-1) {
-                    for (int i = 0; i < maxUndoStep - 1; i++) {
-                        undoX[i] = undoX[i + 1];
-                        undoY[i] = undoY[i + 1];
-                        undoCard[i] = undoCard[i+1];
-                    }
-                    undoIndex = maxUndoStep - 1;
-                }
-                undoX[undoIndex] = allX[index];
-                undoY[undoIndex] = allY[index];
-                undoCard[undoIndex] = index;
-                undoIndex++;
-                Game.setSavingStep(false);
+                saveUndoStep(index);
             }
             allX[index] = x;
             allY[index] = y;
@@ -198,6 +167,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             allY[index] = snap(x, y)[1];
         }
     }
+
     public void setupGameBoard(){
         for (int i=0;i<15;i++){
             gameBoard[i] = new Deck();
@@ -434,6 +404,51 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
         }
         return deck.getCard(index);
+    }
+    // to save the current step for undo purpose
+    public void saveUndoStep(int index){
+        //System.out.println("saving step undo index: "+undoIndex);
+        if (undoIndex < 0){
+            undoIndex = 0;
+        }
+        if (undoIndex > maxUndoStep-1) {
+            for (int i = 0; i < maxUndoStep - 1; i++) {
+                undoX[i] = undoX[i + 1];
+                undoY[i] = undoY[i + 1];
+                undoCard[i] = undoCard[i+1];
+            }
+            undoIndex = maxUndoStep - 1;
+        }
+        undoX[undoIndex] = allX[index];
+        undoY[undoIndex] = allY[index];
+        undoCard[undoIndex] = index;
+        undoIndex++;
+        Game.setSavingStep(false);
+    }
+
+    // undo action
+    public void undo(){
+        undoIndex--;
+        if (undoIndex > maxUndoStep - 1){
+            undoIndex = maxUndoStep - 1;
+        }
+        else if (undoIndex < 0){
+            undoIndex = 0;
+        }
+
+        // 100 means there is no card to be undo
+        if (undoCard[undoIndex] != 100) {
+            allX[undoCard[undoIndex]] = undoX[undoIndex];
+            allY[undoCard[undoIndex]] = undoY[undoIndex];
+            undoCard[undoIndex] = 100;
+            undoX[undoIndex] = 0;
+            undoY[undoIndex] = 0;
+            Game.setInUndo(false);
+        }
+        else{
+            System.out.println("No step to be undo");
+        }
+        //System.out.println("undo index: "+undoIndex);
     }
 }
 

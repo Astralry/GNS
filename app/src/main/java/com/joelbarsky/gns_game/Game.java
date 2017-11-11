@@ -47,7 +47,6 @@ public class Game extends Activity implements OnTouchListener {
                     if (Math.abs(event.getX() - DrawingTheDeck.getUndoXCoordinate()) < DrawingTheDeck.getUndoWidth()
                             && Math.abs(event.getY() - DrawingTheDeck.getUndoYCoordinate()) < DrawingTheDeck.getUndoHeight()){
                         inUndo = true;
-                        System.out.println("UNdo");
                     }
                     else {
                         inUndo = false;
