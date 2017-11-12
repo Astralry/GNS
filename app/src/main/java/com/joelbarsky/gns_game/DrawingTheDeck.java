@@ -23,35 +23,53 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     static Deck[] gameBoard = new Deck[15];
     private Bitmap ss;
 
+    // for scaling on different screen size
+        // scale factor is predetermined
+    private double cardWidthFactor = 81.000000/1776.000000;
+    private double cardHeightFactor = 117.000000/1080.000000;
+    private double colSpacingFactor = 100.000000/1776.000000;
+    private double rowSpacingFactor = 130.000000/1080.000000;
+
+    Thread t = null;
+    SurfaceHolder holder;
+    boolean running = false;
+
+    // stores the cooridinate of the cards
+    private float[] allX;
+    private float[] allY;
+
+    // snapping variables
+    private int[] snappingX = new int[52];
+    private int[] snappingY = new int[52];
+
+    // card variables
+    private int colSpacing = (int) Math.round(Game.getScreenWidth()*colSpacingFactor);
+    private int rowSpacing = (int) Math.round(Game.getScreenHeight()*rowSpacingFactor);
+    private int rowWidth = 10; // # of cards in each row
+    private int cardWidth = (int) Math.round(Game.getScreenWidth()*cardWidthFactor);
+    private int cardHeight = (int) Math.round(Game.getScreenHeight()*cardHeightFactor);
+    private int cardSpacing = colSpacing - cardWidth;
+
     // for undo function
+        // undo button variables
     private Bitmap undo;
     private static int undoXCoordinate = 100;
     private static int undoYCoordinate = 10;
     private static int undoWidth = 117;
     private static int undoHeight = 117;
+        // undo function
     private static int undoIndex = 0;
     private static int[] undoCard = new int[52];
     private static int maxUndoStep = 10;
     private static float[] undoX = new float[maxUndoStep];
     private static float[] undoY = new float[maxUndoStep];
 
-    Thread t = null;
-    SurfaceHolder holder;
-    boolean running = false;
-
-    private float[] allX;
-    private float[] allY;
-    private int[] snappingX = new int[52];
-    private int[] snappingY = new int[52];
-
-    private int colSpacing = 100;
-    private int rowSpacing = 130;
-    private int rowWidth = 10;
-    private int cardWidth = 81;
-    private int cardHeight = 117;
-    private int cardSpacing = colSpacing - cardWidth;
-
     private int index = 100;
+
+    // stacking purpose
+    private int[] numCards = new int [52];
+    private int offset = 20;
+    private boolean removeStack = false;
 
     private int updates;
     private int frames;
@@ -63,6 +81,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public DrawingTheDeck(Context context) {
         super(context);
         undoCard[0] = 100;
+        System.out.println("col: " + colSpacing);
+        System.out.println("row: " + rowSpacing);
+        System.out.println("width: " + cardWidth);
+        System.out.println("height: " + cardHeight);
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
         undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
@@ -82,12 +104,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             allY[i] = xy[1];
             snappingX[i] = xy[0];
             snappingY[i] = xy[1];
+            numCards[i] = 1;
         }
     }
 
     @Override
     public void run() {
-
+        //System.out.println(colSpacing);
         long lastTime = System.nanoTime();
         final double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -143,8 +166,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         if (!inContact) {
             index = 100;
             for (int i = 0; i < 52; i++) {
-                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
                     index = i;
+                    removeStack = true;
                 }
             }
         }
@@ -155,16 +179,23 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
 
         //if a card is touched, update its position
-        if (index != 100 && inContact&&isMoveable()){
+        if (index != 100 && inContact&&isMoveable()) {
+            //stacking purpose
+            if (removeStack){
+                removeNumCardAt(x, y);
+                removeStack = false;
+                System.out.println("card removed");
+            }
             // 0 position is the oldest undo, 4th is the newest
             if (Game.isSavingStep()) {
                 saveUndoStep(index);
             }
             allX[index] = x;
             allY[index] = y;
-        } else if (index != 100 && isMoveable()){
-            allX[index] = snap(x, y)[0];
-            allY[index] = snap(x, y)[1];
+        } else if (index != 100 && isMoveable() && Game.isInSnapMode() && !Game.isInUndo()){
+            float[] temp = snap(x, y);
+            allX[index] = temp[0];
+            allY[index] = temp[1];
         }
     }
 
@@ -194,7 +225,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         c.drawARGB(255, 26, 99, 1);
         c.drawBitmap(undo, undoXCoordinate, undoYCoordinate, null);
         for (int i = 0; i < 52; i++) {
-            c.drawBitmap(getSubImage(deck, i), allX[i] - (81/2), allY[i] - (117/2), null);
+            c.drawBitmap(getSubImage(deck, i), allX[i] - (cardWidth/2), allY[i] - (cardHeight/2), null);
         }
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
@@ -275,7 +306,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int y = 117 * (row - 1);
         int x = 81 * (rank - 1);
 
-        return Bitmap.createBitmap(ss, x, y, 81, 117);
+        return getResizedBitmap(Bitmap.createBitmap(ss, x, y, 81, 117), cardWidth, cardHeight);
     }
 
 
@@ -293,9 +324,17 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
         }
 
-        xy[0] = snappingX[index];
-        xy[1] = snappingY[index];
+        // for stacking purpose
+        if (Game.isAddingStack()) {
+            System.out.println("stacking is adding");
+            numCards[index]++;
+            System.out.println("index: " + index);
+            System.out.println(numCards[index]);
+        }
 
+        xy[0] = snappingX[index] + offset * (numCards[index]-1);
+        xy[1] = snappingY[index];
+        Game.setInSnapMode(false);
         return xy;
     }
 
@@ -398,7 +437,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //loop through all cards
         if (!Game.isInContact()) {
             for (int i = 0; i < 52; i++) {
-                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
                     index = i;
                 }
             }
@@ -446,9 +485,28 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Game.setInUndo(false);
         }
         else{
-            System.out.println("No step to be undo");
+            //TODO: should display something on the screen that says cannot undo anymore steps
+            //System.out.println("No step to be undo");
         }
         //System.out.println("undo index: "+undoIndex);
+    }
+    public void removeNumCardAt(float x, float y){
+        int index = 0;
+        double dist = 0.0;
+        double minDist = 10000;
+
+        for (int i = 0; i < 52; i++){
+            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+            if (dist < minDist){
+                minDist = dist;
+                index = i;
+            }
+        }
+        // card is moved -> numCards at that index is --
+        if (numCards[index] > 0) {
+            numCards[index]--;
+        }
+
     }
 }
 
