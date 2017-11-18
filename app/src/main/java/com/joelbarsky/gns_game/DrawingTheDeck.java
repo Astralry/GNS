@@ -24,6 +24,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private Bitmap ss;
     private int width = 81;
     private int height = 117;
+    static boolean buildUp = true;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -135,14 +136,18 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 }
             }
         }
-
         //if a card is touched, update its position
         if (index != 100 && inContact&&isMoveable()){
             allX[index] = x;
             allY[index] = y;
         } else if (index != 100&&isMoveable()){
-            allX[index] = snap(x, y)[0];
-            allY[index] = snap(x, y)[1];
+            if (isPlayable(x,y)) {
+                allX[index] = snap(x, y)[0];
+                allY[index] = snap(x, y)[1];
+                Card c = deck.getCard(index);
+                updateGameBoard(c, x, y);
+                }
+            //todo else (if not playable) undo movement
         }
     }
     public void setupGameBoard(){
@@ -281,6 +286,39 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int index = findCard(card);
         return !(inCellar(card) && !cellarOpen())&&!inStack(card) && gameBoard[index].deckindex(card) == 0;
     }
+    public boolean isPlayable( float x, float y){
+        Card moving_card = returnCard();
+        Card destination = returnCardAt(x,y);
+    //todo use rowfromPOS  function here instead of findCard
+        int pile = rowFromPos(x,y);
+        if (destination==null||pile ==100){
+            return false;
+        }
+        else if ((destination == null) && pile != 5 || pile !=9){
+            return true;
+        }
+
+        else {
+            int diff = moving_card.getRank() - destination.getRank();
+            if (moving_card.getSuit() == destination.getSuit() && pile != 5 && pile != 9) {
+                if (pile > 10) {
+                    if (buildUp && diff == 1) {
+                        return true;
+                    } else if (diff == -1) {
+                        return true;
+                    }
+                }
+                else if (pile == 10 && gameBoard[10].isEmpty()) {
+                    return true;
+                }
+                else if (java.lang.Math.abs(diff) ==1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     //true if touching stack card
     public boolean inStack(Card c){
         int i = findCard(c);
@@ -299,7 +337,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public int findCard (Card c){
         int i = 0;
 
-        while (i<16){
+        while (i<15){
             if (gameBoard[i].contains(c)){
                 break;
             }
@@ -326,6 +364,93 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
         }
         return deck.getCard(index);
+    }
+    public Card returnCardAt(float x, float y){
+        Deck deck = Game.getDeck();
+        int index = 100;
+        if (!Game.isInContact()) {
+            for (int i = 0; i < 52; i++) {
+                if (x > allX[i] - (81 / 2) && x < allX[i] + (81 / 2) && y > allY[i] - (117 / 2) && y < allY[i] + (117 / 2)) {
+                    index = i;
+                }
+            }
+        }
+        if (index == 100){
+            return null;
+        }
+        Card card = deck.getCard(index);
+        return card;
+    }
+    public void updateGameBoard(Card card, float x, float y){
+        Card bottomCard = returnCardAt(x,y);
+        int i;
+        if (bottomCard ==null){
+            i = rowFromPos(x,y);
+        }
+        else{
+            i = findCard(bottomCard);
+        }
+        int p = findCard(card);
+        gameBoard[p].remove(card);
+        gameBoard[i].addAt(0,card);
+    }
+    public int rowFromPos(float x, float y){
+        int index = 100;
+
+
+        if (x<(5*colSpacing +colSpacing/2) && x > colSpacing/2){
+            if (y>rowSpacing && y<(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index = 0;
+            }
+            else if(y> (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(10/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =1;
+            }
+            else if(y> (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =2;
+            }
+            else if(y> (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =3;
+            }
+            else if(y> (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =4;
+            }
+
+        }
+        else if (x>(6*colSpacing + colSpacing/2) && x< 12*colSpacing){
+            if (y>rowSpacing && y<(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index = 6;
+            }
+            else if(y> (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(10/ (rowWidth / 2)) * rowSpacing + rowSpacing) {
+                index = 7;
+            }
+            else if(y> (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =8;
+            }
+            else if(y> (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =9;
+            }
+            else if(y> (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =10;
+            }
+        }
+        else if (x>6*colSpacing-colSpacing/2 && x<6*colSpacing+colSpacing/2){
+            if(y>rowSpacing && y<rowSpacing*2){
+                index = 11;
+            }
+            else if(y>rowSpacing*3/2 && y<rowSpacing*5/2){
+                index = 12;
+            }
+            else if(y>rowSpacing*5/2 && y<rowSpacing*7/2){
+                index = 13;
+            }
+            else if(y>rowSpacing*7/2 && y<rowSpacing*9/2){
+                index = 14;
+            }
+            else if(y>rowSpacing*9/2 && y<rowSpacing*11/2){
+                index = 10;
+            }
+        }
+        return index;
     }
 }
 

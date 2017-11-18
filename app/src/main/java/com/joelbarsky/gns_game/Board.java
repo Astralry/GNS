@@ -32,6 +32,9 @@ public class Board {
         cards.add(card);
     }
 
+    public void remove(Card card){
+        cards.remove(card);
+    }
 
     public Card getCard(int i){ return cards.get(i);
     }
