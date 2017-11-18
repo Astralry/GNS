@@ -64,12 +64,21 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private static float[] undoX = new float[maxUndoStep];
     private static float[] undoY = new float[maxUndoStep];
 
+        //undo for stacking
+            // maxundo, 0 = previous index, 1 = next index
+    private static int undoStackIndex = 0;
+    private static int[][] undoStacking = new int [maxUndoStep][2];
+    private static int[] undoPreviousStack = new int[maxUndoStep];
+    //private static int[] undoNextStack = new int[maxUndoStep];
+
     private int index = 100;
 
     // stacking purpose
     private int[] numCards = new int [52];
     private int offset = 20;
     private boolean removeStack = false;
+    int previousIndex = 100;
+    int nextIndex = 100;
 
     private int updates;
     private int frames;
@@ -168,7 +177,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
                     index = i;
-                    removeStack = true;
                 }
             }
         }
@@ -176,27 +184,48 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         // if the undo button is touched, revert step
         if (Game.isInUndo()) {
             undo();
+            //Game.setInUndo(false);
         }
 
+        if (Game.isAddingStack() && !Game.isInUndo()) {
+            double dist = 0.0;
+            double minDist = 10000;
+            // returns the index that the card should snap to
+            for (int i = 0; i < 52; i++){
+                dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+                if (dist < minDist){
+                    minDist = dist;
+                    previousIndex = i;
+                }
+            }
+           // System.out.println("previous index: "+ previousIndex);
+            Game.setAddingStack(false);
+        }
         //if a card is touched, update its position
         if (index != 100 && inContact&&isMoveable()) {
-            //stacking purpose
-            if (removeStack){
-                removeNumCardAt(x, y);
-                removeStack = false;
-                System.out.println("card removed");
-            }
-            // 0 position is the oldest undo, 4th is the newest
+
+            // 0 position is the oldest undo, last position is the newest
             if (Game.isSavingStep()) {
                 saveUndoStep(index);
             }
+
             allX[index] = x;
             allY[index] = y;
-        } else if (index != 100 && isMoveable() && Game.isInSnapMode() && !Game.isInUndo()){
+        } else if (index != 100 && isMoveable() && Game.isInSnapMode() && !Game.isInUndo()) {
+            calculateStacking(x, y);
             float[] temp = snap(x, y);
             allX[index] = temp[0];
             allY[index] = temp[1];
         }
+        if (index != 100 && inContact && isMoveable() && Game.isSavingStack()) {
+            saveUndoStack();
+        }
+        // resets undo boolean
+        if (Game.isInUndo()){
+            Game.setInUndo(false);
+            index = 100;
+        }
+
     }
 
     public void setupGameBoard(){
@@ -309,31 +338,29 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return getResizedBitmap(Bitmap.createBitmap(ss, x, y, 81, 117), cardWidth, cardHeight);
     }
 
-
+    // snap and stack at offset
     public float[] snap(float x, float y){
-        int index = 0;
         float[] xy = {0,0};
         double dist = 0.0;
         double minDist = 10000;
 
+        // returns the index that the card should snap to
         for (int i = 0; i < 52; i++){
             dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
             if (dist < minDist){
                 minDist = dist;
-                index = i;
+                nextIndex = i;
             }
         }
 
-        // for stacking purpose
-        if (Game.isAddingStack()) {
-            System.out.println("stacking is adding");
-            numCards[index]++;
-            System.out.println("index: " + index);
-            System.out.println(numCards[index]);
+        if (numCards[nextIndex] > 1) {
+            xy[0] = snappingX[nextIndex] + offset;
+            xy[1] = snappingY[nextIndex];
         }
-
-        xy[0] = snappingX[index] + offset * (numCards[index]-1);
-        xy[1] = snappingY[index];
+        else{
+            xy[0] = snappingX[nextIndex];
+            xy[1] = snappingY[nextIndex];
+        }
         Game.setInSnapMode(false);
         return xy;
     }
@@ -477,36 +504,98 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         // 100 means there is no card to be undo
         if (undoCard[undoIndex] != 100) {
+            undoStack(allX[undoCard[undoIndex]], allY[undoCard[undoIndex]]);
+
+            //undo card position
             allX[undoCard[undoIndex]] = undoX[undoIndex];
             allY[undoCard[undoIndex]] = undoY[undoIndex];
             undoCard[undoIndex] = 100;
             undoX[undoIndex] = 0;
             undoY[undoIndex] = 0;
-            Game.setInUndo(false);
+
+            //TODO: undo card stacking array
+           // Game.setInUndo(false);
         }
         else{
             //TODO: should display something on the screen that says cannot undo anymore steps
             //System.out.println("No step to be undo");
         }
-        //System.out.println("undo index: "+undoIndex);
     }
-    public void removeNumCardAt(float x, float y){
-        int index = 0;
+    public void saveUndoStack(){
+        if (undoStackIndex < 0){
+            undoStackIndex = 0;
+        }
+        if (undoStackIndex > maxUndoStep-1) {
+            for (int i = 0; i < maxUndoStep - 1; i++) {
+                undoPreviousStack[i] = undoPreviousStack[i+1];
+                //undoNextStack[i] = undoNextStack[i+1];
+            }
+            undoStackIndex = maxUndoStep - 1;
+        }
+        undoPreviousStack[undoStackIndex] = previousIndex;
+        //undoNextStack[undoStackIndex] = nextIndex;
+        System.out.println("saved previous: " + undoPreviousStack[undoStackIndex] + " saved at " + undoStackIndex);
+        undoStackIndex++;
+        Game.setSavingStack(false);
+    }
+
+    public void undoStack(float x, float y){
+        int undoNextIndex = 0;
         double dist = 0.0;
         double minDist = 10000;
-
+        undoStackIndex--;
+        if (undoStackIndex > maxUndoStep - 1){
+            undoStackIndex = maxUndoStep - 1;
+        }
+        else if (undoStackIndex < 0){
+            undoStackIndex = 0;
+        }
+        System.out.println("undoing index " + undoStackIndex + " in the undoStackArray");
+        // 100 means there is no card to be undo
+        //if (undoCard[undoStackIndex] != 100) {
+            //undo card position
         for (int i = 0; i < 52; i++){
             dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
             if (dist < minDist){
                 minDist = dist;
-                index = i;
+                undoNextIndex = i;
             }
         }
-        // card is moved -> numCards at that index is --
-        if (numCards[index] > 0) {
-            numCards[index]--;
-        }
-
+            numCards[undoPreviousStack[undoStackIndex]]++;
+            numCards[undoNextIndex]--;
+            //undoStacking[undoStackIndex][0] = 0;
+            //undoStacking[undoStackIndex][1] = 0;
+        //}
+        //else{
+            //TODO: should display something on the screen that says cannot undo anymore steps
+            //System.out.println("No step to be undo");
+       // }
+        previousIndex = 100;
+        //System.out.println("# of cards at " + undoPreviousStack[undoStackIndex] + " is " + numCards[undoPreviousStack[undoStackIndex]]);
+        //System.out.println("# of cards at " + undoNextIndex + " is " + numCards[undoNextIndex]);
     }
+    public void calculateStacking(float x, float y) {
+        if (previousIndex != 100) {
+            float[] xy = {0, 0};
+            double dist = 0.0;
+            double minDist = 10000;
+
+            for (int i = 0; i < 52; i++) {
+                dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+                if (dist < minDist) {
+                    minDist = dist;
+                    nextIndex = i;
+                }
+            }
+            System.out.println("changing previous index: " + previousIndex);
+            System.out.println("changing next index: " + nextIndex);
+            // card is moved -> numCards at that index is --
+            if (numCards[previousIndex] > 0) {
+                numCards[previousIndex]--;
+            }
+            numCards[nextIndex]++;
+        }
+    }
+
 }
 

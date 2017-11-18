@@ -16,6 +16,9 @@ public class Game extends Activity implements OnTouchListener {
     private static boolean inContact = false;
     private static boolean savingStep = true;
     private static boolean inUndo = false;
+    private static boolean savingStack = true;
+    private static boolean undoStack = false;
+
     private static int screenWidth = 0;
     private static int screenHeight = 0;
     private static boolean inSnapMode = false;
@@ -63,17 +66,19 @@ public class Game extends Activity implements OnTouchListener {
                             && Math.abs(event.getY() - DrawingTheDeck.getUndoYCoordinate()) < DrawingTheDeck.getUndoHeight()){
                         inUndo = true;
                         addingStack = false;
+                        //savingStack = false;
                     }
                     else {
-                        addingStack = true;
+
                         inUndo = false;
+                        addingStack = true;
                         x = event.getX();
                         y = event.getY();
                     }
                     break;
                 case (MotionEvent.ACTION_MOVE):
 
-                    inUndo = false;
+                    //addingStack = true;
                     inContact = true;
                     x = event.getX();
                     y = event.getY();
@@ -81,9 +86,10 @@ public class Game extends Activity implements OnTouchListener {
                     break;
                 case (MotionEvent.ACTION_UP):
                     savingStep = true;
-
+                    savingStack = true;
                     inContact = false;
                     inSnapMode = true;
+                    //inUndo = false;
                     break;
             }
 
@@ -140,9 +146,26 @@ public class Game extends Activity implements OnTouchListener {
     public static void setInUndo(boolean inUndo) {
         Game.inUndo = inUndo;
     }
+
     public static boolean isInUndo() {
 
         return inUndo;
+    }
+
+    public static boolean isSavingStack() {
+        return savingStack;
+    }
+
+    public static boolean isUndoStack() {
+        return undoStack;
+    }
+
+    public static void setSavingStack(boolean savingStack) {
+        Game.savingStack = savingStack;
+    }
+
+    public static void setUndoStack(boolean undoStack) {
+        Game.undoStack = undoStack;
     }
 
     public static int getScreenWidth() {
@@ -163,5 +186,9 @@ public class Game extends Activity implements OnTouchListener {
 
     public static boolean isAddingStack() {
         return addingStack;
+    }
+
+    public static void setAddingStack(boolean addingStack) {
+        Game.addingStack = addingStack;
     }
 }
