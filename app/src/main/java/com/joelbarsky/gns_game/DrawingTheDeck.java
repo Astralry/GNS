@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 import android.graphics.Matrix;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.ArrayList;
 
 /**
@@ -67,9 +68,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //undo for stacking
             // maxundo, 0 = previous index, 1 = next index
     private static int undoStackIndex = 0;
-    private static int[][] undoStacking = new int [maxUndoStep][2];
     private static int[] undoPreviousStack = new int[maxUndoStep];
-    //private static int[] undoNextStack = new int[maxUndoStep];
+
+    //display order for render()
+    private int[] displayOrder = new int[52];
 
     private int index = 100;
 
@@ -114,6 +116,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             snappingX[i] = xy[0];
             snappingY[i] = xy[1];
             numCards[i] = 1;
+            displayOrder[i] = i;
         }
     }
 
@@ -208,6 +211,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             if (Game.isSavingStep()) {
                 saveUndoStep(index);
             }
+            if (Game.isInDisplayOrder()){
+                setRenderOrder(index);
+            }
 
             allX[index] = x;
             allY[index] = y;
@@ -253,7 +259,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public void render(Canvas c){
         c.drawARGB(255, 26, 99, 1);
         c.drawBitmap(undo, undoXCoordinate, undoYCoordinate, null);
-        for (int i = 0; i < 52; i++) {
+
+        for (int j = 0; j < 52; j++) {
+            int i = displayOrder[j];
             c.drawBitmap(getSubImage(deck, i), allX[i] - (cardWidth/2), allY[i] - (cardHeight/2), null);
         }
         Paint paint = new Paint();
@@ -513,7 +521,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             undoX[undoIndex] = 0;
             undoY[undoIndex] = 0;
 
-            //TODO: undo card stacking array
            // Game.setInUndo(false);
         }
         else{
@@ -587,13 +594,25 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                     nextIndex = i;
                 }
             }
-            System.out.println("changing previous index: " + previousIndex);
-            System.out.println("changing next index: " + nextIndex);
+            //System.out.println("changing previous index: " + previousIndex);
+            //System.out.println("changing next index: " + nextIndex);
             // card is moved -> numCards at that index is --
             if (numCards[previousIndex] > 0) {
                 numCards[previousIndex]--;
             }
             numCards[nextIndex]++;
+        }
+    }
+
+    public void setRenderOrder(int cardIndex){
+        int displayOrderIndex = Arrays.binarySearch(displayOrder, cardIndex);
+        if (displayOrderIndex >= 0) {
+            for (int i = displayOrderIndex; i < displayOrder.length - 1; i++) {
+                displayOrder[i] = displayOrder[i + 1];
+            }
+            displayOrder[displayOrder.length - 1] = cardIndex;
+            //System.out.println(displayOrder[51]);
+            Game.setInDisplayOrder(false);
         }
     }
 
