@@ -42,6 +42,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     // snapping variables
     private int[] snappingX = new int[52];
     private int[] snappingY = new int[52];
+    boolean holdingCard = false;
 
     // card variables
     private int colSpacing = (int) Math.round(Game.getScreenWidth()*colSpacingFactor);
@@ -176,13 +177,17 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         //loop through all cards to find the index of the touched card
         if (!inContact) {
-            index = 100;
-            for (int i = 0; i < 52; i++) {
+            //index = 100;
+            for (int i = 0; i<52; i++) {
                 if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
-                    index = i;
+                    if (!holdingCard) {
+                        index = i;
+                        holdingCard = true;
+                    }
                 }
             }
         }
+        System.out.println(index);
 
         // if the undo button is touched, revert step
         if (Game.isInUndo()) {
@@ -220,8 +225,11 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         } else if (index != 100 && isMoveable() && Game.isInSnapMode() && !Game.isInUndo()) {
             calculateStacking(x, y);
             float[] temp = snap(x, y);
+
+            System.out.println("card index: " + index);
             allX[index] = temp[0];
             allY[index] = temp[1];
+            holdingCard = false;
         }
         if (index != 100 && inContact && isMoveable() && Game.isSavingStack()) {
             saveUndoStack();
@@ -229,7 +237,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         // resets undo boolean
         if (Game.isInUndo()){
             Game.setInUndo(false);
-            index = 100;
         }
 
     }
@@ -360,7 +367,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 nextIndex = i;
             }
         }
-
         if (numCards[nextIndex] > 1) {
             xy[0] = snappingX[nextIndex] + offset;
             xy[1] = snappingY[nextIndex];

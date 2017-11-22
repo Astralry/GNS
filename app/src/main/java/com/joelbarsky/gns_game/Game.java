@@ -69,7 +69,6 @@ public class Game extends Activity implements OnTouchListener {
                         addingStack = false;
                     }
                     else {
-
                         inUndo = false;
                         addingStack = true;
                         x = event.getX();
