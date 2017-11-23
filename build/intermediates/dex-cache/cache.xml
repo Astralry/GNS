@@ -2,202 +2,139 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/c2793e8a7cd25abc6764d3003b50bb2baa1a3ac6/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_e8da5319245c6e23581517f56d38470d54e4fefe.jar" />
+        sha1="55ebd7a3e46526f4b3b64d868e0f50d6e6027c88">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_84bd3cb431e9ebf4aa01ac5f4b29d06139b11487\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/d4675ec2ecc8400af5331c2d6ad2e331728db200/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_7d52fd99278435d17c3edc20a1b32652ac93d44c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/fa67dc34e597b78add11a159df12a3984bf1ccca/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\c84378c051b1a4ca2aec3ccc2df40ad0350152d2\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_25428753b91de8cafb47d3a32a7b4fa2e4d3e73d.jar" />
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_d9198664ecec2b0c03d1d733eb00e68b3b9f8c66\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/961a2e12bb46198259d7d5006c42292c0977162c/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_ca203de8b53c77e6acdb31062f86a5d72fe2af7a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/0de31f6418c2e9f4f2449fb0be2676a754568355/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_2553747b7ddc75a87ef74a565c447bf084e9ee9e.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/c2793e8a7cd25abc6764d3003b50bb2baa1a3ac6/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\622e82ac2cc65649175c67f5c4b256c6ce4a4bf5\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_e8da5319245c6e23581517f56d38470d54e4fefe.jar" />
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_02533321460404e68aab3093d38c07f662fbbe8f\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/87d5a67e5557bdbd931f09373d19cc2bf5d2288d/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_3fbe3bb8103e71328efaeceed87de029a813dfee.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/171b7b351279287e0de96436708d68cf7c92a2c2/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="9c1c44672010b6847f3744ec3702624d8d16c240">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_2100ac1554f9e5c5ce63b563f5d98e1519a6fab8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/304ce4272193393319f19e785849989b9a9a9d10/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_066e1043c2bb7f4c411063de47fc9b82446558e1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/304ce4272193393319f19e785849989b9a9a9d10/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\bca6e97e63917f1f5d4b2450010460a4b994095d\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_066e1043c2bb7f4c411063de47fc9b82446558e1.jar" />
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_f3b51530ec9a76863069206e5a9f16a332f65004\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/157924168f78f63ef5fbac16c82ae968085fcec5/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\a9e94c312f766d62cad236902707713b6b4149bb\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_fe1860f07cb2b81a66b25142883772dbbc8899d8.jar" />
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_19dd278e42c1a8348295f95301f732337b0e2f48\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/171b7b351279287e0de96436708d68cf7c92a2c2/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\1b98397759d09dd2f223c5cae996ad71f6bf4860\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="9c1c44672010b6847f3744ec3702624d8d16c240">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_2100ac1554f9e5c5ce63b563f5d98e1519a6fab8.jar" />
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_de3f7a68974cd2a1416440f0575d6194a8041848\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/support-annotations-25.1.1_f460d33fd9e09456f4899f48c7b3b997a96edafc.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/d4675ec2ecc8400af5331c2d6ad2e331728db200/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\f8466a277523160903e1d5b41c4889aea7a53665\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_7d52fd99278435d17c3edc20a1b32652ac93d44c.jar" />
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_318bd4d2903fbe1ad2e536c14f92a515e3e9cd1e\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/38a22b244cbd6e6ab35c116f6a8fa601e2860601/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\bba224f4760e75817a962e66d9f672de1448c2a7\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_5159968f791cc8225283a307ff38b9019b1f12cc.jar" />
+        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_ecb79d79129a99f087d4d3e213a2337c2bba83e3\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/961a2e12bb46198259d7d5006c42292c0977162c/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\1984df0a9cc8c556e51530b21495ff803a118ba9\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_ca203de8b53c77e6acdb31062f86a5d72fe2af7a.jar" />
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1ebfede9e72dbd8148a5c5499ffb65f1f3a479aa\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/87d5a67e5557bdbd931f09373d19cc2bf5d2288d/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\63fe8a06c2de99b168a5d631586d8eba0b949cb3\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_3fbe3bb8103e71328efaeceed87de029a813dfee.jar" />
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_871779e5eddb5262fcf0607d00397fb45c8569b0\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/157924168f78f63ef5fbac16c82ae968085fcec5/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_fe1860f07cb2b81a66b25142883772dbbc8899d8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/support-annotations-25.1.1_f460d33fd9e09456f4899f48c7b3b997a96edafc.jar" />
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_151e8a48cb30ceeef03b2c579360adf64ea04f75\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/38a22b244cbd6e6ab35c116f6a8fa601e2860601/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_5159968f791cc8225283a307ff38b9019b1f12cc.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/fa67dc34e597b78add11a159df12a3984bf1ccca/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_25428753b91de8cafb47d3a32a7b4fa2e4d3e73d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/joelbarsky/.android/build-cache/0de31f6418c2e9f4f2449fb0be2676a754568355/output/jars/classes.jar"
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\4263c59c72d56bb55930046a9b0c974dc769fa35\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
-        <dex dex="/Users/joelbarsky/AndroidStudioProjects/GNS/app/build/intermediates/pre-dexed/debug/classes_2553747b7ddc75a87ef74a565c447bf084e9ee9e.jar" />
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_546a34a4e4e6a817b341f4970544ef46a37e50e9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\d0b55ff49eeefba7873ce86ddf65e3f7b53d173c\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_17662ae0a486cd0970e4bd8968be1363a2a01b70\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kevin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.1\support-annotations-25.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.3.1_e9e1db95f7f06a627e2a0c7dcd76640c84cf84a4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kevin\.android\build-cache\7731fc6571b96c445a4250cb4efa5404e4b0d14e\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_519ea1dca424a5c12a3855276ca337bc7e892299\classes.dex" />
     </item>
 
 </items>
