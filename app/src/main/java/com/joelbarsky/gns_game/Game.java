@@ -71,6 +71,7 @@ public class Game extends Activity implements OnTouchListener {
                     else {
                         inUndo = false;
                         addingStack = true;
+                       // DrawingTheDeck.setHoldingCard(false);
                         x = event.getX();
                         y = event.getY();
                     }
