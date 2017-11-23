@@ -15,7 +15,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Game"></activity>
+        <activity android:name=".Game" />
+        <activity android:name=".About" />
+        <activity
+            android:name=".How"
+            android:label="@string/title_activity_how"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

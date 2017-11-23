@@ -2,14 +2,29 @@
     <string name="app_name">GNS_game</string>
 
 
-<!-- String Used for Home screen Buttons -->
-    <string name="Easy">Easy</string>
-    <string name="Medium">Medium</string>
-    <string name="Hard">Hard</string>
-    <string name="How_to_play">How to Play</string>
+    <!-- String Used for Home screen Buttons -->
+    <string name="Play">Play</string>
     <string name="About">About</string>
+    <string name="Created">Created by: Adrian Pan, Joel Barsky <br />and Kevin Xie</string>
+    <string name="How">How to Play</string>
+
     <!-- Description of the Title Logo -->
-    <string name="GNS_logo">Title Image</string>
+    <string name="Title">Grand Napoleon Solitaire</string>
+
+    <!-- About -->
+    <string name="Description">
+        Passed down from generation to generation, Grand Napoleon Solitaire is the Ratzer Family
+        game with origins dating back to the early 1900s. It is typically a single player game and
+        played using a physical deck of cards. The rules of the game have been verbally
+        passed down, but this app immortalizes it in electronic form. \n\n
+
+        We, the creators of this app, hope you enjoy the game, like all of those before you.
+    </string>
+
+    <!-- How to Play -->
+    <string name="instructions">
+        The game begins with the cards laid out in this pattern
+    </string>
 
     <!-- Strings Used on Game Page -->
     <string name="Back">Back</string>
@@ -19,70 +34,97 @@
     <string name="Highscore">Highscore</string>
 
     <!-- Cards-->
-    <string name="AH">Ace of Hearts</string>
-    <string name="AS">Ace of Spades</string>
-    <string name="AD">Ace of Diamonds</string>
-    <string name="AC">Ace of Clubs</string>
-
-    <string name="TwoH">Two of Hearts</string>
-    <string name="TwoS">Two of Spades</string>
-    <string name="TwoD">Two of Diamonds</string>
-    <string name="TwoC">Two of Clubs</string>
-
-    <string name="ThreeH">Three of Hearts</string>
-    <string name="ThreeS">Three of Spades</string>
-    <string name="ThreeD">Three of Diamonds</string>
-    <string name="ThreeC">Three of Clubs</string>
-
-    <string name="FourH">Four of Hearts</string>
-    <string name="FourS">Four of Spades</string>
-    <string name="FourD">Four of Diamonds</string>
-    <string name="FourC">Four of Clubs</string>
-
-    <string name="FiveH">Five of Hearts</string>
-    <string name="FiveS">Five of Spades</string>
-    <string name="FiveD">Five of Diamonds</string>
-    <string name="FiveC">Five of Clubs</string>
-
-    <string name="SixH">Six of Hearts</string>
-    <string name="SixS">Six of Spades</string>
-    <string name="SixD">Six of Diamonds</string>
-    <string name="SixC">Six of Clubs</string>
-
-    <string name="SevenH">Seven of Hearts</string>
-    <string name="SevenS">Seven of Spades</string>
-    <string name="SevenD">Seven of Diamonds</string>
-    <string name="SevenC">Seven of Clubs</string>
-
-    <string name="EightH">Eight of Hearts</string>
-    <string name="EightS">Eight of Spades</string>
-    <string name="EightD">Eight of Diamonds</string>
-    <string name="EightC">Eight of Clubs</string>
-
-    <string name="NineH">Nine of Hearts</string>
-    <string name="NineS">Nine of Spades</string>
-    <string name="NineD">Nine of Diamonds</string>
-    <string name="NineC">Nine of Clubs</string>
-
-    <string name="TenH">Ten of Hearts</string>
-    <string name="TenS">Ten of Spades</string>
-    <string name="TenD">Ten of Diamonds</string>
-    <string name="TenC">Ten of Clubs</string>
-
-    <string name="JackH">Jack of Hearts</string>
-    <string name="JackS">Jack of Spades</string>
-    <string name="JackD">Jack of Diamonds</string>
-    <string name="JackC">Jack of Clubs</string>
-
-    <string name="QueenH">Queen of Hearts</string>
-    <string name="QueenS">Queen of Spades</string>
-    <string name="QueenD">Queen of Diamonds</string>
-    <string name="QueenC">Queen of Clubs</string>
-
-    <string name="KingH">King of Hearts</string>
-    <string name="KingS">King of Spades</string>
-    <string name="KingD">King of Diamonds</string>
-    <string name="KingC">King of Clubs</string>
     <string name="cellar">Cellar Card</string>
+    <string name="title_activity_how">How</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
 
 </resources>
