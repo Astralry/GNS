@@ -32,10 +32,21 @@ public class Board {
         cards.add(card);
     }
 
+    public void remove(Card card){
+        cards.remove(card);
+    }
+    public int getIndex(Card card){
+        return cards.indexOf(card);
+    }
+
+    public int length(){return cards.size();
+    }
 
     public Card getCard(int i){ return cards.get(i);
     }
-    public boolean isEmpty(){ return cards.isEmpty();}
+
+    public boolean isEmpty(){ return cards.isEmpty();
+    }
 
     public boolean contains(Card c){ return cards.contains(c);
     }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.FloatMath;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Matrix;
@@ -30,6 +31,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private double cardHeightFactor = 117.000000/1080.000000;
     private double colSpacingFactor = 100.000000/1776.000000;
     private double rowSpacingFactor = 130.000000/1080.000000;
+    private int width = 81;
+    private int height = 117;
+    static boolean buildUp = true;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -42,6 +46,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     // snapping variables
     private int[] snappingX = new int[52];
     private int[] snappingY = new int[52];
+    private int index = 0;
     private static boolean holdingCard = false;
 
     // card variables
@@ -123,7 +128,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     @Override
     public void run() {
-        //System.out.println(colSpacing);
+
         long lastTime = System.nanoTime();
         final double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
@@ -171,6 +176,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         float x = Game.getX();
         float y = Game.getY();
         boolean inContact = Game.isInContact();
+        Deck deck = Game.getDeck();
+        Card a = null;
+        Card b;
         boolean isInUndo = Game.isInUndo();
         boolean isAddingStack = Game.isAddingStack();
         boolean isSavingStep = Game.isSavingStep();
@@ -193,7 +201,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 }
             }
         }
+        if(index != 100){
+            a = deck.getCard(index);
 
+        }
         // if the undo button is touched, revert step
         if (isInUndo) {
             undo();
@@ -226,14 +237,23 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
             allX[index] = x;
             allY[index] = y;
-        } else if (index != 100  && isInSnapMode && !isInUndo) {
-
+        } else if (index != 100&&isMoveable()&& isInSnapMode && !isInUndo){
             calculateStacking(x, y);
             float[] temp = snap(x, y);
-
             allX[index] = temp[0];
             allY[index] = temp[1];
             holdingCard = false;
+            b = returnCardAt(a,x,y);
+            System.out.println("A is " + a.toString()+ "B is" + b.toString());
+            int j = findCard(b);
+            //int j = rowFromPos(x,y);
+            System.out.println("J = " + j);
+            System.out.println(allowedMove(a,j));
+            if (allowedMove(a,j)) {
+                updateGameBoard(a,j);
+
+            }
+            //todo else (if not playable) undo movement
         }
         if (index != 100 && inContact && isSavingStack) {
             saveUndoStack();
@@ -442,6 +462,25 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int index = findCard(card);
         return !(inCellar(card) && !cellarOpen())&&!inStack(card) && gameBoard[index].deckindex(card) == 0;
     }
+
+    public boolean isPlayable( float x, float y){
+        Card moving_card = returnCard();
+        Card destination = returnCardAt(moving_card, x,y);
+
+        int pile;
+        if (destination ==null){
+            pile = rowFromPos(x,y);
+        }
+        else{
+            pile = findCard(destination);
+        }
+        if (pile ==100){
+            return false;
+        }
+        return allowedMove(moving_card,pile);
+
+    }
+
     //true if touching stack card
     public boolean inStack(Card c){
         int i = findCard(c);
@@ -460,7 +499,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public int findCard (Card c){
         int i = 0;
 
-        while (i<16){
+        while (i<15){
             if (gameBoard[i].contains(c)){
                 break;
             }
@@ -472,21 +511,280 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     }
     public Card returnCard(){
         deck = Game.getDeck();
-        //Get the x and y of the touch location
-        float x = Game.getX();
-        float y = Game.getY();
-
-        //index of 100 means no card was touched
-
-        //loop through all cards
+        if (index == 100){
+            return null;
+        }
+        Card card = deck.getCard(index);
+        return card;
+    }
+    public Card returnCardAt(Card a, float x, float y){
+        Deck deck = Game.getDeck();
+        int index = 100;
+        Card card;
         if (!Game.isInContact()) {
             for (int i = 0; i < 52; i++) {
                 if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
                     index = i;
+                    card = deck.getCard(i);
+                    if(card!=a){
+                        return card;
+                    }
+
                 }
             }
         }
-        return deck.getCard(index);
+        if (index == 100){
+            return null;
+        }
+        card = deck.getCard(index);
+        return card;
+    }
+    public void updateGameBoard(Card card, int i){
+        int p = findCard(card);
+        gameBoard[p].remove(card);
+        gameBoard[i].addAt(0, card);
+    }
+    public int rowFromPos(float x, float y){
+        int index = 100;
+        if (x>11*colSpacing/2 && x<13*colSpacing/2){
+            if(y>rowSpacing*9/2 && y<rowSpacing*13/2){
+                index = 10;
+            }
+            else if(y>rowSpacing && y<rowSpacing*2){
+                index = 11;
+            }
+            else if(y>rowSpacing*3/2 && y<rowSpacing*5/2){
+                index = 12;
+            }
+            else if(y>rowSpacing*5/2 && y<rowSpacing*7/2){
+                index = 13;
+            }
+            else if(y>rowSpacing*7/2 && y<rowSpacing*9/2){
+                index = 14;
+            }
+
+        }
+        else if (x<(11*colSpacing/2) && x > colSpacing/2){
+            if (y>rowSpacing && y<(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index = 0;
+            }
+            else if(y> (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(10/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =1;
+            }
+            else if(y> (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =2;
+            }
+            else if(y> (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =3;
+            }
+            else if(y> (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =4;
+            }
+
+        }
+        else if (x>(6*colSpacing + colSpacing/2) && x< 12*colSpacing){
+            if (y>rowSpacing && y<(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index = 5;
+            }
+            else if(y> (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(10/ (rowWidth / 2)) * rowSpacing + rowSpacing) {
+                index = 6;
+            }
+            else if(y> (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =7;
+            }
+            else if(y> (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =8;
+            }
+            else if(y> (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+                index =9;
+            }
+        }
+
+        return index;
+    }
+    public boolean isPlayableOnRow(Card moving_card){
+        Card destination;
+        for (int i= 0;i<15;i++){
+            boolean yes = allowedMove(moving_card,i);
+            if (yes){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean allowedMove(Card a, int i){
+        if(a==null){
+            return false;
+        }
+        Card destination;
+        if (gameBoard[i].isEmpty()){
+            destination = null;
+        }
+        else{
+            destination = gameBoard[i].getCard(0);
+        }
+        if ((destination == null) && !(i == 5 || i ==9)){
+            return true;
+        }
+        else if (destination!=null){
+            System.out.println("in else if statement");
+            int diff = a.getRank() - destination.getRank();
+            if (a.getSuit() == destination.getSuit() && i != 5 && i != 9) {
+                if (i > 10) {
+                    if (buildUp && diff == 1) {
+                        return true;
+                    } else if (diff == -1) {
+                        return true;
+                    }
+                }
+                else if (i == 10 && gameBoard[10].isEmpty()) {
+                    return true;
+                }
+                else if (java.lang.Math.abs(diff) ==1){
+                    return true;
+                }
+                System.out.println("Still in else if statement");
+            }
+        }
+
+        return false;
+    }
+
+    //
+    //ASTAR
+    //
+    public boolean isPlayableOnFoundation(Card moving_card){
+        for (int i= 11;i<15;i++){
+            boolean yes = allowedMove(moving_card,i);
+            if (yes){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isAccessable(Card card){
+        int j = findCard(card);
+        int index = gameBoard[j].getIndex(card);
+        if (index==0){
+            return true;
+        }
+        if (j==10 ){
+            if (cellarOpen()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        try {
+            Card beside = gameBoard[j].getCard(index-1);
+            if (isPlayableOnRow(beside)){
+                return true;
+            }
+        } catch (Exception e){
+
+        }
+
+        return false;
+
+    }
+    public int rowScore(int i){
+        int score = 0;
+        int j = 0;
+        while (j<gameBoard[i].length()){
+            Card card = gameBoard[i].getCard(j);
+            if (isAccessable(card)) {
+                if (isPlayableOnFoundation(card)) {
+                    score += 30 / (j + 1);
+                } else if (isPlayableOnRow(card)) {
+                    score += 10/(j+1);
+                }
+                j++;
+            }
+        }
+        return score;
+    }
+    public int gameScore(){
+        int score = 0;
+        for (int i=0; i<11; i++){
+            score += rowScore(i);
+        }
+        for (int i =11; i<15; i++){
+            score += gameBoard[i].length()*30;
+        }
+        return score;
+    }
+    public int gameCost(Card a, int row){
+        int score = gameScore();
+        Deck[] temp = gameBoard;
+        int a_index = findCard(a);
+        gameBoard[a_index].remove(a);
+        gameBoard[row].addAt(0,a);
+        int new_score = gameScore();
+        gameBoard = temp;
+        return score - new_score;
+    }
+    public void playBestMove(int a, int b){
+        Card moving = gameBoard[a].getCard(0);
+        gameBoard[a].remove(moving);
+        gameBoard[b].addAt(0,moving);
+    }
+    public int[] bestMove(){
+        int highscore= gameScore();
+        int prev;
+        int [] move = {0,0};
+        for (int i = 0; i<11; i++){
+            if (gameBoard[i].isEmpty()){
+                break;
+            }
+            Card moving = gameBoard[i].getCard(0);
+            int j = 0;
+            while(j<15){
+                if (allowedMove(moving,j)) {
+                    prev = highscore;
+                    highscore = gameScore() - gameCost(moving, j);
+                    if (highscore > prev) {
+                        move[0] = i;
+                        move[1] = j;
+
+                    }
+                }
+                j++;
+            }
+        }
+        return move;
+    }
+    public boolean gameEnd(){
+        for (int i =0; i<11; i++){
+            if (!gameBoard[i].isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean noMoves(){
+        for (int i =0; i<11; i++){
+            if (!gameBoard[i].isEmpty()){
+                Card card = gameBoard[i].getCard(0);
+                if (isPlayableOnRow(card)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean Solveable(){
+        int i = 0;
+        while(i<200){
+            int [] x = bestMove();
+            playBestMove(x[0],x[1]);
+            i++;
+            if(gameEnd()){
+                return true;
+            }
+        }
+
+        return false;
     }
     // to save the current step for undo purpose
     public void saveUndoStep(int index){
@@ -532,7 +830,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             undoX[undoIndex] = 0;
             undoY[undoIndex] = 0;
 
-           // Game.setInUndo(false);
+            // Game.setInUndo(false);
         }
         else{
             //TODO: should display something on the screen that says cannot undo anymore steps
@@ -571,7 +869,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //System.out.println("undoing index " + undoStackIndex + " in the undoStackArray");
         // 100 means there is no card to be undo
         //if (undoCard[undoStackIndex] != 100) {
-            //undo card position
+        //undo card position
         for (int i = 0; i < 52; i++){
             dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
             if (dist < minDist){
@@ -579,15 +877,15 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 undoNextIndex = i;
             }
         }
-            numCards[undoPreviousStack[undoStackIndex]]++;
-            numCards[undoNextIndex]--;
-            //undoStacking[undoStackIndex][0] = 0;
-            //undoStacking[undoStackIndex][1] = 0;
+        numCards[undoPreviousStack[undoStackIndex]]++;
+        numCards[undoNextIndex]--;
+        //undoStacking[undoStackIndex][0] = 0;
+        //undoStacking[undoStackIndex][1] = 0;
         //}
         //else{
-            //TODO: should display something on the screen that says cannot undo anymore steps
-            //System.out.println("No step to be undo");
-       // }
+        //TODO: should display something on the screen that says cannot undo anymore steps
+        //System.out.println("No step to be undo");
+        // }
         previousIndex = 100;
         //System.out.println("# of cards at " + undoPreviousStack[undoStackIndex] + " is " + numCards[undoPreviousStack[undoStackIndex]]);
         //System.out.println("# of cards at " + undoNextIndex + " is " + numCards[undoNextIndex]);
