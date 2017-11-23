@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.FloatMath;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Matrix;
@@ -46,7 +45,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     // snapping variables
     private int[] snappingX = new int[52];
     private int[] snappingY = new int[52];
-    private int index = 0;
     private static boolean holdingCard = false;
 
     // card variables
@@ -225,7 +223,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Game.setAddingStack(false);
         }
         //if a card is touched, update its position
-        if (index != 100  && inContact) {
+        if (index != 100  && inContact &&isMoveable()) {
 
             // 0 position is the oldest undo, last position is the newest
             if (isSavingStep) {
@@ -244,14 +242,14 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             allY[index] = temp[1];
             holdingCard = false;
             b = returnCardAt(a,x,y);
-            System.out.println("A is " + a.toString()+ "B is" + b.toString());
             int j = findCard(b);
             //int j = rowFromPos(x,y);
-            System.out.println("J = " + j);
-            System.out.println(allowedMove(a,j));
             if (allowedMove(a,j)) {
                 updateGameBoard(a,j);
 
+            }
+            else{
+                undo();
             }
             //todo else (if not playable) undo movement
         }
@@ -627,7 +625,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             return true;
         }
         else if (destination!=null){
-            System.out.println("in else if statement");
             int diff = a.getRank() - destination.getRank();
             if (a.getSuit() == destination.getSuit() && i != 5 && i != 9) {
                 if (i > 10) {
@@ -643,7 +640,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 else if (java.lang.Math.abs(diff) ==1){
                     return true;
                 }
-                System.out.println("Still in else if statement");
             }
         }
 
