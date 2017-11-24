@@ -71,6 +71,7 @@ public class Game extends Activity implements OnTouchListener {
                     else {
                         inUndo = false;
                         addingStack = true;
+                        inDisplayOrder = true;
                        // DrawingTheDeck.setHoldingCard(false);
                         x = event.getX();
                         y = event.getY();
@@ -88,11 +89,12 @@ public class Game extends Activity implements OnTouchListener {
 
                     break;
                 case (MotionEvent.ACTION_UP):
+
                     savingStep = true;
                     savingStack = true;
                     inContact = false;
                     inSnapMode = true;
-                    inDisplayOrder = true;
+
                     //inUndo = false;
                     break;
 

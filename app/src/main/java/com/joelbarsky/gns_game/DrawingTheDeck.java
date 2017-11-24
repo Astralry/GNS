@@ -59,10 +59,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     // for undo function
         // undo button variables
     private Bitmap undo;
-    private static int undoXCoordinate = 100;
-    private static int undoYCoordinate = 10;
-    private static int undoWidth = 117;
-    private static int undoHeight = 117;
+    private static final int undoXCoordinate = 1600;
+    private static final int undoYCoordinate = 350;
+    private static final int undoWidth = 117;
+    private static final int undoHeight = 117;
         // undo function
     private static int undoIndex = 0;
     private static int[] undoCard = new int[52];
@@ -74,6 +74,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             // maxundo, 0 = previous index, 1 = next index
     private static int undoStackIndex = 0;
     private static int[] undoPreviousStack = new int[maxUndoStep];
+
+    // saving function
+    private Bitmap save;
+    private static final int saveXCoordinate = 1800;
+    private static final int saveYCoordinate = 350;
+    private static final int saveWidth = 117;
+    private static final int saveHeight = 117;
 
     //display order for render()
     private int[] displayOrder = new int[52];
@@ -103,7 +110,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         System.out.println("height: " + cardHeight);
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
-        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gns_logo), undoWidth, undoHeight);
+        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
+        save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.save), saveWidth, saveHeight);
         holder = getHolder();
 
         //get the deck
@@ -189,13 +197,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //loop through all cards to find the index of the touched card
         if (!inContact) {
             index = 100;
-            for (int j = 0; j<52; j++) {
+            for (int j = 0; j < 52; j++) {
                 int i = displayOrder[j];
                 if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
-                    //if (!holdingCard) {
                     index = i;
-                    //    holdingCard = true;
-                    //}
                 }
             }
         }
@@ -223,7 +228,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Game.setAddingStack(false);
         }
         //if a card is touched, update its position
-        if (index != 100  && inContact && isMoveable()) {
+        if (index != 100  && inContact &&isMoveable()) {
 
             // 0 position is the oldest undo, last position is the newest
             if (isSavingStep) {
@@ -235,13 +240,11 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
             allX[index] = x;
             allY[index] = y;
-        }
-        else if (index != 100 && isMoveable() && isInSnapMode && !isInUndo){
+        } else if (index != 100&&isMoveable()&& isInSnapMode && !isInUndo){
             calculateStacking(x, y);
             float[] temp = snap(x, y);
             allX[index] = temp[0];
             allY[index] = temp[1];
-            holdingCard = false;
 
             int j;
             b = returnCardAt(a,x,y);
@@ -263,13 +266,16 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
             //todo else (if not playable) undo movement
         }
+
         if (index != 100 && inContact && isSavingStack) {
             saveUndoStack();
         }
+
         // resets undo boolean
         if (isInUndo){
             Game.setInUndo(false);
         }
+
     }
 
     public void setupGameBoard(){
@@ -297,6 +303,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public void render(Canvas c){
         c.drawARGB(255, 26, 99, 1);
         c.drawBitmap(undo, undoXCoordinate, undoYCoordinate, null);
+        c.drawBitmap(save, saveXCoordinate, saveYCoordinate, null);
 
         for (int j = 0; j < 52; j++) {
             int i = displayOrder[j];
@@ -391,13 +398,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         double minDist = 10000;
 
         // returns the index that the card should snap to
-        for (int i = 0; i < 52; i++){
-            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
-            if (dist < minDist){
-                minDist = dist;
-                nextIndex = i;
-            }
-        }
+//        for (int i = 0; i < 52; i++){
+//            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+//            if (dist < minDist){
+//                minDist = dist;
+//                nextIndex = i;
+//            }
+//        }
         if (numCards[nextIndex] > 1) {
             xy[0] = snappingX[nextIndex] + offset;
             xy[1] = snappingY[nextIndex];
@@ -427,7 +434,43 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return resizedBitmap;
     }
 
-    //checks if touched card is movable
+    // getter and setter
+    public int getColSpacing() {
+        return colSpacing;
+    }
+
+    public int getRowSpacing() {
+        return rowSpacing;
+    }
+
+    public int getRowWidth() {
+        return rowWidth;
+    }
+
+    public int getCardWidth() {
+        return cardWidth;
+    }
+
+    public int getCardHeight() {
+        return cardHeight;
+    }
+
+    public static int getUndoXCoordinate() {
+        return undoXCoordinate;
+    }
+
+    public static int getUndoYCoordinate() {
+        return undoYCoordinate;
+    }
+
+    public static int getUndoWidth() {
+        return undoWidth;
+    }
+
+    public static int getUndoHeight() {
+        return undoHeight;
+    }
+
     public boolean isMoveable() {
         //Get card at location on board
         Card card = returnCard();
@@ -477,7 +520,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             if (gameBoard[i].contains(c)){
                 break;
             }
-            else if (i != 14){
+            else{
                 i++;
             }
         }
@@ -779,7 +822,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     }
     // to save the current step for undo purpose
     public void saveUndoStep(int index){
-        //System.out.println("saving step undo index: "+undoIndex);
         if (undoIndex < 0){
             undoIndex = 0;
         }
@@ -794,7 +836,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         undoX[undoIndex] = allX[index];
         undoY[undoIndex] = allY[index];
         undoCard[undoIndex] = index;
-        System.out.println("card " + index + " is saved at " + undoIndex );
         undoIndex++;
         Game.setSavingStep(false);
     }
@@ -809,7 +850,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         else if (undoIndex < 0){
             undoIndex = 0;
         }
-        System.out.println("undoing card "+ undoCard[undoIndex] + " at undo step " + undoIndex);
 
         // 100 means there is no card to be undo
         if (undoCard[undoIndex] != 100) {
@@ -837,7 +877,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         else{
             //TODO: should display something on the screen that says cannot undo anymore steps
-            //System.out.println("No step to be undo");
         }
     }
     public void saveUndoStack(){
@@ -885,13 +924,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         //undoStacking[undoStackIndex][0] = 0;
         //undoStacking[undoStackIndex][1] = 0;
         }
-        //else{
+        else{
         //TODO: should display something on the screen that says cannot undo anymore steps
-        //System.out.println("No step to be undo");
-        // }
+        }
         previousIndex = 100;
-        //System.out.println("# of cards at " + undoPreviousStack[undoStackIndex] + " is " + numCards[undoPreviousStack[undoStackIndex]]);
-        //System.out.println("# of cards at " + undoNextIndex + " is " + numCards[undoNextIndex]);
     }
     public void calculateStacking(float x, float y) {
         if (previousIndex != 100) {
@@ -906,8 +942,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                     nextIndex = i;
                 }
             }
-            //System.out.println("changing previous index: " + previousIndex);
-            //System.out.println("changing next index: " + nextIndex);
             // card is moved -> numCards at that index is --
             if (numCards[previousIndex] > 0) {
                 numCards[previousIndex]--;
@@ -917,13 +951,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     }
 
     public void setRenderOrder(int cardIndex){
-        int displayOrderIndex = Arrays.binarySearch(displayOrder, cardIndex);
-        if (displayOrderIndex >= 0) {
+        int displayOrderIndex = getArrayIndex(displayOrder,cardIndex);
+        if (displayOrderIndex >= 0 && displayOrderIndex < 52) {
             for (int i = displayOrderIndex; i < displayOrder.length - 1; i++) {
                 displayOrder[i] = displayOrder[i + 1];
             }
             displayOrder[displayOrder.length - 1] = cardIndex;
-            //System.out.println(displayOrder[51]);
             Game.setInDisplayOrder(false);
         }
     }
@@ -931,42 +964,17 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public static void setHoldingCard(boolean holdingCard) {
         DrawingTheDeck.holdingCard = holdingCard;
     }
+    public int getArrayIndex(int[] arr,int value) {
 
-    // getter and setter
-    public int getColSpacing() {
-        return colSpacing;
-    }
+        int k=0;
+        for(int i=0;i<arr.length;i++){
 
-    public int getRowSpacing() {
-        return rowSpacing;
-    }
-
-    public int getRowWidth() {
-        return rowWidth;
-    }
-
-    public int getCardWidth() {
-        return cardWidth;
-    }
-
-    public int getCardHeight() {
-        return cardHeight;
-    }
-
-    public static int getUndoXCoordinate() {
-        return undoXCoordinate;
-    }
-
-    public static int getUndoYCoordinate() {
-        return undoYCoordinate;
-    }
-
-    public static int getUndoWidth() {
-        return undoWidth;
-    }
-
-    public static int getUndoHeight() {
-        return undoHeight;
+            if(arr[i]==value){
+                k=i;
+                break;
+            }
+        }
+        return k;
     }
 }
 
