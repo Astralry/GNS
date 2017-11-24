@@ -184,7 +184,6 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         boolean isInSnapMode = Game.isInSnapMode();
         boolean isSavingStack = Game.isSavingStack();
 
-
         //index of 100 means no card was touched
         //loop through all cards to find the index of the touched card
         if (!inContact) {
@@ -206,7 +205,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         // if the undo button is touched, revert step
         if (isInUndo) {
             undo();
-            //Game.setInUndo(false);
+            Game.setInUndo(false);
         }
 
         if (isAddingStack && !isInUndo) {
@@ -242,6 +241,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             allX[index] = temp[0];
             allY[index] = temp[1];
             holdingCard = false;
+
             int j;
             b = returnCardAt(a,x,y);
             if (b == null){
@@ -249,17 +249,17 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }else{
                 j = findCard(b);
             }
-            //int j = rowFromPos(x,y);
-            if (j < gameBoard.length - 1) {
+
+            if (j > gameBoard.length && index != 100) {
                 undo();
             }
+
             else if (allowedMove(a, j)) {
                 updateGameBoard(a, j);
             }
-//            else{
-//                undo();
-//                System.out.println("fuck");
-//            }
+            else{
+                undo();
+            }
             //todo else (if not playable) undo movement
         }
         if (index != 100 && inContact && isSavingStack) {
@@ -530,13 +530,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             else if(y>rowSpacing && y<rowSpacing*2){
                 index = 11;
             }
-            else if(y>rowSpacing*3/2 && y<rowSpacing*5/2){
+            else if(y>rowSpacing*2 && y<rowSpacing*3){
                 index = 12;
             }
-            else if(y>rowSpacing*5/2 && y<rowSpacing*7/2){
+            else if(y>rowSpacing*3 && y<rowSpacing*4){
                 index = 13;
             }
-            else if(y>rowSpacing*7/2 && y<rowSpacing*9/2){
+            else if(y>rowSpacing*4 && y<rowSpacing*5){
                 index = 14;
             }
 
@@ -592,12 +592,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         else{
             destination = gameBoard[i].getCard(0);
         }
-        if ((destination == null) && !(i == 5 || i ==9)){
+        if ((destination == null) && !(i == 4 || i ==9)){
             return true;
         }
         else if (destination!=null){
             int diff = a.getRank() - destination.getRank();
-            if (a.getSuit() == destination.getSuit() && i != 5 && i != 9) {
+            if (a.getSuit() == destination.getSuit() && i != 4 && i != 9) {
                 if (i > 10) {
                     if (buildUp && diff == 1) {
                         return true;
