@@ -102,7 +102,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         System.out.println("height: " + cardHeight);
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
-        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
+        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.blank_button), undoWidth, undoHeight);
         holder = getHolder();
 
         //get the deck
@@ -186,14 +186,14 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
 
         //index of 100 means no card was touched
-
         //loop through all cards to find the index of the touched card
         if (!inContact) {
             index = 100;
-            for (int i = 0; i<52; i++) {
+            for (int j = 0; j<52; j++) {
+                int i = displayOrder[j];
                 if (x > allX[i] - (cardWidth / 2) && x < allX[i] + (cardWidth / 2) && y > allY[i] - (cardHeight / 2) && y < allY[i] + (cardHeight / 2)) {
                     //if (!holdingCard) {
-                        index = i;
+                    index = i;
                     //    holdingCard = true;
                     //}
                 }
@@ -223,7 +223,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Game.setAddingStack(false);
         }
         //if a card is touched, update its position
-        if (index != 100  && inContact &&isMoveable()) {
+        if (index != 100  && inContact && isMoveable()) {
 
             // 0 position is the oldest undo, last position is the newest
             if (isSavingStep) {
@@ -235,22 +235,31 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
             allX[index] = x;
             allY[index] = y;
-        } else if (index != 100&&isMoveable()&& isInSnapMode && !isInUndo){
+        }
+        else if (index != 100 && isMoveable() && isInSnapMode && !isInUndo){
             calculateStacking(x, y);
             float[] temp = snap(x, y);
             allX[index] = temp[0];
             allY[index] = temp[1];
             holdingCard = false;
+            int j;
             b = returnCardAt(a,x,y);
-            int j = findCard(b);
-            //int j = rowFromPos(x,y);
-            if (allowedMove(a,j)) {
-                updateGameBoard(a,j);
-
+            if (b == null){
+                j = rowFromPos(x,y);
+            }else{
+                j = findCard(b);
             }
-            else{
+            //int j = rowFromPos(x,y);
+            if (j < gameBoard.length - 1) {
                 undo();
             }
+            else if (allowedMove(a, j)) {
+                updateGameBoard(a, j);
+            }
+//            else{
+//                undo();
+//                System.out.println("fuck");
+//            }
             //todo else (if not playable) undo movement
         }
         if (index != 100 && inContact && isSavingStack) {
@@ -417,43 +426,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         return resizedBitmap;
     }
 
-    // getter and setter
-    public int getColSpacing() {
-        return colSpacing;
-    }
-
-    public int getRowSpacing() {
-        return rowSpacing;
-    }
-
-    public int getRowWidth() {
-        return rowWidth;
-    }
-
-    public int getCardWidth() {
-        return cardWidth;
-    }
-
-    public int getCardHeight() {
-        return cardHeight;
-    }
-
-    public static int getUndoXCoordinate() {
-        return undoXCoordinate;
-    }
-
-    public static int getUndoYCoordinate() {
-        return undoYCoordinate;
-    }
-
-    public static int getUndoWidth() {
-        return undoWidth;
-    }
-
-    public static int getUndoHeight() {
-        return undoHeight;
-    }
-
+    //checks if touched card is movable
     public boolean isMoveable() {
         //Get card at location on board
         Card card = returnCard();
@@ -489,10 +462,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         int i = findCard(c);
         return i ==10;
     }
+
     //true if bottom right OR bottom left pile is empty
     public boolean cellarOpen(){
         return gameBoard[4].isEmpty() || gameBoard[9].isEmpty();
     }
+
     //returns pile with card
     public int findCard (Card c){
         int i = 0;
@@ -501,12 +476,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             if (gameBoard[i].contains(c)){
                 break;
             }
-            else{
+            else if (i != 14){
                 i++;
             }
         }
         return i;
     }
+    //returns the card that is being touched
     public Card returnCard(){
         deck = Game.getDeck();
         if (index == 100){
@@ -515,6 +491,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         Card card = deck.getCard(index);
         return card;
     }
+    //return card at x and y excluding input card
     public Card returnCardAt(Card a, float x, float y){
         Deck deck = Game.getDeck();
         int index = 100;
@@ -537,11 +514,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         card = deck.getCard(index);
         return card;
     }
+    //update the gameboard
     public void updateGameBoard(Card card, int i){
         int p = findCard(card);
         gameBoard[p].remove(card);
         gameBoard[i].addAt(0, card);
     }
+    //x and y input = row output
     public int rowFromPos(float x, float y){
         int index = 100;
         if (x>11*colSpacing/2 && x<13*colSpacing/2){
@@ -600,18 +579,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
         return index;
     }
-    public boolean isPlayableOnRow(Card moving_card){
-        Card destination;
-        for (int i= 0;i<15;i++){
-            boolean yes = allowedMove(moving_card,i);
-            if (yes){
-                return true;
-            }
-        }
-        return false;
-    }
+
+    //true if move is valid
     public boolean allowedMove(Card a, int i){
-        if(a==null){
+        if(a==null || i == 100){
             return false;
         }
         Card destination;
@@ -630,7 +601,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 if (i > 10) {
                     if (buildUp && diff == 1) {
                         return true;
-                    } else if (diff == -1) {
+                    } else if (!buildUp && diff == -1) {
                         return true;
                     }
                 }
@@ -649,6 +620,16 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     //
     //ASTAR
     //
+    public boolean isPlayableOnRow(Card moving_card){
+        Card destination;
+        for (int i= 0;i<15;i++){
+            boolean yes = allowedMove(moving_card,i);
+            if (yes){
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean isPlayableOnFoundation(Card moving_card){
         for (int i= 11;i<15;i++){
             boolean yes = allowedMove(moving_card,i);
@@ -923,6 +904,43 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     public static void setHoldingCard(boolean holdingCard) {
         DrawingTheDeck.holdingCard = holdingCard;
+    }
+
+    // getter and setter
+    public int getColSpacing() {
+        return colSpacing;
+    }
+
+    public int getRowSpacing() {
+        return rowSpacing;
+    }
+
+    public int getRowWidth() {
+        return rowWidth;
+    }
+
+    public int getCardWidth() {
+        return cardWidth;
+    }
+
+    public int getCardHeight() {
+        return cardHeight;
+    }
+
+    public static int getUndoXCoordinate() {
+        return undoXCoordinate;
+    }
+
+    public static int getUndoYCoordinate() {
+        return undoYCoordinate;
+    }
+
+    public static int getUndoWidth() {
+        return undoWidth;
+    }
+
+    public static int getUndoHeight() {
+        return undoHeight;
     }
 }
 

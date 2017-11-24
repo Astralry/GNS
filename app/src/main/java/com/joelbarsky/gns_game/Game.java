@@ -75,9 +75,13 @@ public class Game extends Activity implements OnTouchListener {
                         x = event.getX();
                         y = event.getY();
                     }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case (MotionEvent.ACTION_MOVE):
-
                     inContact = true;
                     x = event.getX();
                     y = event.getY();
@@ -91,8 +95,8 @@ public class Game extends Activity implements OnTouchListener {
                     inDisplayOrder = true;
                     //inUndo = false;
                     break;
-            }
 
+            }
         return true;
     }
 

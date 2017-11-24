@@ -13,6 +13,9 @@ android {
         aaptOptions {
             cruncherEnabled = false
         }
+        lintOptions{
+            abortOnError false
+        }
     }
     buildTypes {
         release {
