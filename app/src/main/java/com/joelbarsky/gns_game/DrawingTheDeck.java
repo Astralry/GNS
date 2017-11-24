@@ -44,8 +44,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private float[] allY;
 
     // snapping variables
-    private int[] snappingX = new int[52];
-    private int[] snappingY = new int[52];
+    private int[] snappingX = new int[53];
+    private int[] snappingY = new int[53];
     private static boolean holdingCard = false;
 
     // card variables
@@ -88,7 +88,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private int index = 100;
 
     // stacking purpose
-    private int[] numCards = new int [52];
+    private int[] numCards = new int [53];
     private int offset = 20;
     private boolean removeStack = false;
     int previousIndex = 100;
@@ -110,8 +110,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         System.out.println("height: " + cardHeight);
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
-        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
-        save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.save), saveWidth, saveHeight);
+        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.blank_button), undoWidth, undoHeight);
+        save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gns_logo), saveWidth, saveHeight);
         holder = getHolder();
 
         //get the deck
@@ -122,14 +122,17 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         allY = new float[52];
 
         //setup board
-        for (int i = 0; i < 52; i++){
+        for (int i = 0; i < 53; i++){
             xy = setupPosition(i);
-            allX[i] = xy[0];
-            allY[i] = xy[1];
             snappingX[i] = xy[0];
             snappingY[i] = xy[1];
-            numCards[i] = 1;
-            displayOrder[i] = i;
+
+            if (i < 52){
+                allX[i] = xy[0];
+                allY[i] = xy[1];
+                numCards[i] = 1;
+                displayOrder[i] = i;
+            }
         }
     }
 
@@ -353,9 +356,12 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             xy[0] = ((index - 24) % (rowWidth / 2)) * colSpacing + cardWidth + 6 * colSpacing + cardSpacing;
             xy[1] = ((index - 24) / (rowWidth / 2)) * rowSpacing + 2*rowSpacing;
             //foundation
-        } else if (index > 47) {
+        } else if (index > 47 && index != 52) {
             xy[0] = 6 * colSpacing;
             xy[1] = (index - 48) * rowSpacing + rowSpacing * 3 / 2;
+        } else if (index == 52){
+            xy[0] = 6 * colSpacing;
+            xy[1] = (index - 48) * rowSpacing + 5 / 2 * rowSpacing;
         }
         return xy;
     }
@@ -539,6 +545,16 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public Card returnCardAt(Card a, float x, float y){
         Deck deck = Game.getDeck();
         int index = 100;
+
+        //cellar
+        if (rowFromPos(x,y) == 10){
+            if (gameBoard[10].isEmpty()){
+                return null;
+            } else {
+                return gameBoard[10].getCard(0);
+            }
+        }
+
         Card card;
         if (!Game.isInContact()) {
             for (int i = 0; i < 52; i++) {
@@ -568,7 +584,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public int rowFromPos(float x, float y){
         int index = 100;
         if (x>=11*colSpacing/2 && x<=13*colSpacing/2){
-            if(y>=rowSpacing*9/2 && y<=rowSpacing*13/2){
+            if(y>=rowSpacing*11/2 && y<=rowSpacing*13/2){
                 index = 10;
             }
             else if(y>rowSpacing && y<=rowSpacing*2){
@@ -629,16 +645,20 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         if(a==null || i == 100){
             return false;
         }
+
         Card destination;
+
         if (gameBoard[i].isEmpty()){
             destination = null;
         }
         else{
             destination = gameBoard[i].getCard(0);
         }
+
         if ((destination == null) && !(i == 4 || i ==9)){
             return true;
         }
+
         else if (destination!=null){
             int diff = a.getRank() - destination.getRank();
             if (diff ==-12 && a.getRank()==1 ){
