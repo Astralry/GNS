@@ -33,6 +33,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private int width = 81;
     private int height = 117;
     static boolean buildUp = true;
+    static int movesToFoundation =0;
 
     Thread t = null;
     SurfaceHolder holder;
@@ -102,7 +103,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         System.out.println("height: " + cardHeight);
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
-        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.blank_button), undoWidth, undoHeight);
+        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gns_logo), undoWidth, undoHeight);
         holder = getHolder();
 
         //get the deck
@@ -523,56 +524,56 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     //x and y input = row output
     public int rowFromPos(float x, float y){
         int index = 100;
-        if (x>11*colSpacing/2 && x<13*colSpacing/2){
-            if(y>rowSpacing*9/2 && y<rowSpacing*13/2){
+        if (x>=11*colSpacing/2 && x<=13*colSpacing/2){
+            if(y>=rowSpacing*9/2 && y<=rowSpacing*13/2){
                 index = 10;
             }
-            else if(y>rowSpacing && y<rowSpacing*2){
+            else if(y>rowSpacing && y<=rowSpacing*2){
                 index = 11;
             }
-            else if(y>rowSpacing*2 && y<rowSpacing*3){
+            else if(y>rowSpacing*2 && y<=rowSpacing*3){
                 index = 12;
             }
-            else if(y>rowSpacing*3 && y<rowSpacing*4){
+            else if(y>rowSpacing*3 && y<=rowSpacing*4){
                 index = 13;
             }
-            else if(y>rowSpacing*4 && y<rowSpacing*5){
+            else if(y>rowSpacing*4 && y<=rowSpacing*5){
                 index = 14;
             }
 
         }
-        else if (x<(11*colSpacing/2) && x > colSpacing/2){
-            if (y>rowSpacing && y<(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+        else if (x<=(11*colSpacing/2) && x >= colSpacing/2){
+            if (y>=rowSpacing && y<=(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index = 0;
             }
-            else if(y> (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(10/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(10/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =1;
             }
-            else if(y> (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =2;
             }
-            else if(y> (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =3;
             }
-            else if(y> (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =4;
             }
 
         }
-        else if (x>(6*colSpacing + colSpacing/2) && x< 12*colSpacing){
-            if (y>rowSpacing && y<(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+        else if (x>=(6*colSpacing + colSpacing/2) && x<= 12*colSpacing){
+            if (y>=rowSpacing && y<=(5/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index = 5;
             }
-            else if(y> (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(10/ (rowWidth / 2)) * rowSpacing + rowSpacing) {
+            else if(y>= (5/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(10/ (rowWidth / 2)) * rowSpacing + rowSpacing) {
                 index = 6;
             }
-            else if(y> (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (10/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(15/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =7;
             }
-            else if(y> (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (15/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(20/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =8;
             }
-            else if(y> (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
+            else if(y>= (20/ (rowWidth / 2)) * rowSpacing + 2* rowSpacing && y<=(25/ (rowWidth / 2)) * rowSpacing + rowSpacing){
                 index =9;
             }
         }
@@ -597,8 +598,21 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         else if (destination!=null){
             int diff = a.getRank() - destination.getRank();
+            if (diff ==-12 && a.getRank()==1 ){
+                diff = 1;
+            }
+            else if(diff ==12 && destination.getRank()==1){
+                diff = -1;
+            }
             if (a.getSuit() == destination.getSuit() && i != 4 && i != 9) {
-                if (i > 10) {
+                if (movesToFoundation==0 && i>10){
+                    if (java.lang.Math.abs(diff) ==1){
+                        movesToFoundation ++;
+                        buildUp = diff==1;
+                        return true;
+                    }
+                }
+                else if (i > 10) {
                     if (buildUp && diff == 1) {
                         return true;
                     } else if (!buildUp && diff == -1) {
@@ -787,6 +801,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     // undo action
     public void undo(){
+        Deck deck = Game.getDeck();
         undoIndex--;
         if (undoIndex > maxUndoStep - 1){
             undoIndex = maxUndoStep - 1;
@@ -801,9 +816,20 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             undoStack(allX[undoCard[undoIndex]], allY[undoCard[undoIndex]]);
 
             //undo card position
+            int initrow = rowFromPos(allX[undoCard[undoIndex]],allY[undoCard[undoIndex]]);
+            System.out.println(initrow);
             allX[undoCard[undoIndex]] = undoX[undoIndex];
             allY[undoCard[undoIndex]] = undoY[undoIndex];
+            Card c = deck.getCard(undoCard[undoIndex]);
+
+            int j = rowFromPos(undoX[undoIndex],undoY[undoIndex]);
+            if (initrow>10){
+                movesToFoundation--;
+            }
+            System.out.println("X ="+ undoX[undoIndex]+ " Y= "+ undoY[undoIndex]);
+            System.out.println(j);
             undoCard[undoIndex] = 100;
+            updateGameBoard(c,j);
             undoX[undoIndex] = 0;
             undoY[undoIndex] = 0;
 
@@ -845,7 +871,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         //System.out.println("undoing index " + undoStackIndex + " in the undoStackArray");
         // 100 means there is no card to be undo
-        //if (undoCard[undoStackIndex] != 100) {
+        if (undoCard[undoStackIndex] != 100) {
         //undo card position
         for (int i = 0; i < 52; i++){
             dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
@@ -858,7 +884,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         numCards[undoNextIndex]--;
         //undoStacking[undoStackIndex][0] = 0;
         //undoStacking[undoStackIndex][1] = 0;
-        //}
+        }
         //else{
         //TODO: should display something on the screen that says cannot undo anymore steps
         //System.out.println("No step to be undo");
