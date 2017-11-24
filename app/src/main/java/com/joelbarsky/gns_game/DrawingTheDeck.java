@@ -254,7 +254,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 updateGameBoard(a,j);
             }
             else{
-                //undo();
+                undo();
             }
         }
 
