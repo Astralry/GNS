@@ -19,6 +19,7 @@ public class Game extends Activity implements OnTouchListener {
     private static boolean savingStack = true;
     private static boolean undoStack = false;
     private static boolean inDisplayOrder = true;
+    private static boolean preventUndo1 = false;
 
     private static int screenWidth = 0;
     private static int screenHeight = 0;
@@ -67,12 +68,13 @@ public class Game extends Activity implements OnTouchListener {
                             && Math.abs(event.getY() - DrawingTheDeck.getUndoYCoordinate()) < DrawingTheDeck.getUndoHeight()){
                         inUndo = true;
                         addingStack = false;
+                        preventUndo1 = true;
                     }
                     else {
                         inUndo = false;
                         addingStack = true;
                         inDisplayOrder = true;
-                       // DrawingTheDeck.setHoldingCard(false);
+                        preventUndo1 = false;
                         x = event.getX();
                         y = event.getY();
                     }
@@ -86,7 +88,6 @@ public class Game extends Activity implements OnTouchListener {
                     inContact = true;
                     x = event.getX();
                     y = event.getY();
-
                     break;
                 case (MotionEvent.ACTION_UP):
 
@@ -94,8 +95,6 @@ public class Game extends Activity implements OnTouchListener {
                     savingStack = true;
                     inContact = false;
                     inSnapMode = true;
-
-                    //inUndo = false;
                     break;
 
             }
@@ -204,5 +203,9 @@ public class Game extends Activity implements OnTouchListener {
 
     public static void setInDisplayOrder(boolean inDisplayOrder) {
         Game.inDisplayOrder = inDisplayOrder;
+    }
+
+    public static boolean isPreventUndo1() {
+        return preventUndo1;
     }
 }

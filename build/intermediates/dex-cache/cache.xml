@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="9344ad6ad71197feb708b6d957ddd61686553f28">
-        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_84bd3cb431e9ebf4aa01ac5f4b29d06139b11487\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="/Users/adrianpan/AndroidStudioProjects/GNS/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\kevin\Desktop\Kevin\Mcgill\Design Project\DPGNS_real\GNS\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_151e8a48cb30ceeef03b2c579360adf64ea04f75\classes.dex" />
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_be67144475eca6ec81620baa0cb61102e6d6b9d4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/adrianpan/AndroidStudioProjects/GNS/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fcfa984724b272ea1af77634b7d3f9ef98bde855">
+        <dex dex="/Users/adrianpan/AndroidStudioProjects/GNS/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_96d139b5d2715853b22ab40491217c95c0e08b9c/classes.dex" />
     </item>
 
 </items>
