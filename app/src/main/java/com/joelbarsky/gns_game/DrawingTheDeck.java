@@ -110,8 +110,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         System.out.println("height: " + cardHeight);
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
-        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.blank_button), undoWidth, undoHeight);
-        save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gns_logo), saveWidth, saveHeight);
+        undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
+        save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.save), saveWidth, saveHeight);
         holder = getHolder();
 
         //get the deck
@@ -134,6 +134,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 displayOrder[i] = i;
             }
         }
+        numCards[52] = 0;
     }
 
     @Override
@@ -195,6 +196,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         boolean isInDisplayOrder = Game.isInDisplayOrder();
         boolean isInSnapMode = Game.isInSnapMode();
         boolean isSavingStack = Game.isSavingStack();
+        boolean preventUndo1 = Game.isPreventUndo1();
 
         //index of 100 means no card was touched
         //loop through all cards to find the index of the touched card
@@ -217,11 +219,11 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             Game.setInUndo(false);
         }
 
-        if (isAddingStack && !isInUndo) {
+        if (isMoveable() && isAddingStack && !isInUndo) {
             double dist = 0.0;
             double minDist = 10000;
             // returns the index that the card should snap to
-            for (int i = 0; i < 52; i++){
+            for (int i = 0; i < 53; i++){
                 dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
                 if (dist < minDist){
                     minDist = dist;
@@ -239,6 +241,9 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
             if (isInDisplayOrder){
                 setRenderOrder(index);
+            }
+            if (isSavingStack){
+                saveUndoStack();
             }
 
             allX[index] = x;
@@ -263,22 +268,18 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
             else if (allowedMove(a, j)) {
                 updateGameBoard(a, j);
+                System.out.println("test");
             }
-            else{
+            else if (!preventUndo1){
                 undo();
+                System.out.println("test1");
             }
             //todo else (if not playable) undo movement
         }
-
-        if (index != 100 && inContact && isSavingStack) {
-            saveUndoStack();
-        }
-
         // resets undo boolean
         if (isInUndo){
             Game.setInUndo(false);
         }
-
     }
 
     public void setupGameBoard(){
@@ -316,8 +317,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
 
-        c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
-        c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
+        //c.drawText(Game.getX()+ " x,y " + Game.getY() + " \n " + Game.isInContact() + index, 1000, 300, paint);
+        //c.drawText(frames + " FPS, ticks " + updates, 1000, 400, paint);
     }
 
     public void pause() {
@@ -404,13 +405,13 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         double minDist = 10000;
 
         // returns the index that the card should snap to
-//        for (int i = 0; i < 52; i++){
-//            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
-//            if (dist < minDist){
-//                minDist = dist;
-//                nextIndex = i;
-//            }
-//        }
+        for (int i = 0; i < 53; i++){
+            dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
+            if (dist < minDist){
+                minDist = dist;
+                nextIndex = i;
+            }
+        }
         if (numCards[nextIndex] > 1) {
             xy[0] = snappingX[nextIndex] + offset;
             xy[1] = snappingY[nextIndex];
@@ -932,7 +933,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         // 100 means there is no card to be undo
         if (undoCard[undoStackIndex] != 100) {
         //undo card position
-        for (int i = 0; i < 52; i++){
+        for (int i = 0; i < 53; i++){
             dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
             if (dist < minDist){
                 minDist = dist;
@@ -955,7 +956,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             double dist = 0.0;
             double minDist = 10000;
 
-            for (int i = 0; i < 52; i++) {
+            for (int i = 0; i < 53; i++) {
                 dist = Math.sqrt(((x - snappingX[i]) * (x - snappingX[i]) + (y - snappingY[i]) * (y - snappingY[i])));
                 if (dist < minDist) {
                     minDist = dist;
