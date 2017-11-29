@@ -20,7 +20,9 @@
         <activity
             android:name=".How"
             android:label="@string/title_activity_how"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ProgressBar" />
+        <activity android:name=".Win"></activity>
     </application>
 
 </manifest>

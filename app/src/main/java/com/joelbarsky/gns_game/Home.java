@@ -18,16 +18,16 @@ public class Home extends Activity{
     }
 
     public void game_screen(View v){
-        Intent toGame = new Intent(v.getContext(), Game.class);
+        Intent toGame = new Intent(v.getContext(), Win.class);
         startActivityForResult(toGame, 0);
     }
     public void about_screen(View v){
-        Intent toGame = new Intent(v.getContext(), About.class);
-        startActivityForResult(toGame, 0);
+        Intent toAbout = new Intent(v.getContext(), About.class);
+        startActivityForResult(toAbout, 0);
     }
     public void how_screen(View v){
-        Intent toGame = new Intent(v.getContext(), How.class);
-        startActivityForResult(toGame, 0);
+        Intent toHow = new Intent(v.getContext(), How.class);
+        startActivityForResult(toHow, 0);
     }
 
 }

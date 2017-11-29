@@ -24,6 +24,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     static Deck[] gameBoard = new Deck[15];
     private Bitmap ss;
 
+    //TODO intent for win screen and win condition
+
     // for scaling on different screen size
         // scale factor is predetermined
     private double cardWidthFactor = 81.000000/1776.000000;

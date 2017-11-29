@@ -33,6 +33,13 @@
     <string name="Score">Score</string>
     <string name="Highscore">Highscore</string>
 
+    <!-- Loading Screen -->
+    <string name="setting_up">Setting up your game...</string>
+
+    <!--Win Screen -->
+    <string name="you_win">You Win!</string>
+    <string name="play_again">Play Again</string>
+
     <!-- Cards-->
     <string name="cellar">Cellar Card</string>
     <string name="title_activity_how">How</string>
