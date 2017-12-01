@@ -36,8 +36,8 @@ public class Game extends Activity implements OnTouchListener {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels; //x resolution
         screenHeight = metrics.heightPixels; //y resolution
-        //System.out.println(screenWidth);
-        //System.out.println(screenHeight);
+        System.out.println(screenWidth);
+        System.out.println(screenHeight);
         super.onCreate(savedInstanceState);
         v = new DrawingTheDeck(this);
         v.setOnTouchListener(this);
@@ -79,7 +79,7 @@ public class Game extends Activity implements OnTouchListener {
                         y = event.getY();
                     }
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

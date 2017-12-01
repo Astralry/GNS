@@ -30,6 +30,11 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private double cardHeightFactor = 117.000000/1080.000000;
     private double colSpacingFactor = 100.000000/1776.000000;
     private double rowSpacingFactor = 130.000000/1080.000000;
+    private static double undoXFactor = 1600.00000/1920.00000;
+    private static double undoYFactor = 350.00000 / 1080.00000;
+    private static double saveXFactor = 1800.00000/1920.00000;
+    private static double saveYFactor = 350.00000 / 1080.00000;
+    private static double buttonFactor = 150.00000/1080.00000;
     private int width = 81;
     private int height = 117;
     static boolean buildUp = true;
@@ -59,10 +64,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     // for undo function
         // undo button variables
     private Bitmap undo;
-    private static final int undoXCoordinate = 1600;
-    private static final int undoYCoordinate = 350;
-    private static final int undoWidth = 117;
-    private static final int undoHeight = 117;
+    private static int undoXCoordinate = 1600;
+    private static int undoYCoordinate = 350;
+    private static int undoWidth = 0;
+    private static int undoHeight = 0;
         // undo function
     private static int undoIndex = 0;
     private static int[] undoCard = new int[52];
@@ -76,11 +81,16 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     private static int[] undoPreviousStack = new int[maxUndoStep];
 
     // saving function
+    // TODO: Save function not implemented
     private Bitmap save;
     private static final int saveXCoordinate = 1800;
     private static final int saveYCoordinate = 350;
     private static final int saveWidth = 117;
     private static final int saveHeight = 117;
+
+    private Bitmap gameBackground;
+    private static final int gameBackgroundYCoordinate = 0;
+    private static final int gameBackgroundXCoordinate = 0;
 
     //display order for render()
     private int[] displayOrder = new int[52];
@@ -108,10 +118,24 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         System.out.println("row: " + rowSpacing);
         System.out.println("width: " + cardWidth);
         System.out.println("height: " + cardHeight);
+
+        undoXCoordinate = (int) Math.round(Game.getScreenWidth()*undoXFactor);
+        undoYCoordinate = (int) Math.round(Game.getScreenHeight()*undoYFactor);
+        undoWidth = (int) Math.round(Game.getScreenHeight()*buttonFactor);
+        undoHeight = (int) Math.round(Game.getScreenHeight()*buttonFactor);
+
+        colSpacing = (int) Math.round(Game.getScreenWidth()*colSpacingFactor);
+        rowSpacing = (int) Math.round(Game.getScreenHeight()*rowSpacingFactor);
+        rowWidth = 10; // # of cards in each row
+        cardWidth = (int) Math.round(Game.getScreenWidth()*cardWidthFactor);
+        cardHeight = (int) Math.round(Game.getScreenHeight()*cardHeightFactor);
+        cardSpacing = colSpacing - cardWidth;
+
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
         undo = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.undo), undoWidth, undoHeight);
-        save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.save), saveWidth, saveHeight);
+        //save = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.save), saveWidth, saveHeight);
+        gameBackground = getResizedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.gamebackground), Game.getScreenWidth(), Game.getScreenHeight());
         holder = getHolder();
 
         //get the deck
@@ -305,9 +329,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     //DRAWING METHOD
     public void render(Canvas c){
-        c.drawARGB(255, 26, 99, 1);
+        //c.drawARGB(255, 26, 99, 1);
+        c.drawBitmap(gameBackground,gameBackgroundXCoordinate,gameBackgroundYCoordinate,null);
         c.drawBitmap(undo, undoXCoordinate, undoYCoordinate, null);
-        c.drawBitmap(save, saveXCoordinate, saveYCoordinate, null);
+        //c.drawBitmap(save, saveXCoordinate, saveYCoordinate, null);
 
         for (int j = 0; j < 52; j++) {
             int i = displayOrder[j];
@@ -686,7 +711,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 else if (i == 10 && gameBoard[10].isEmpty()) {
                     return true;
                 }
-                else if (java.lang.Math.abs(diff) ==1){
+                else if (java.lang.Math.abs(diff) ==1 && i != 10){
                     return true;
                 }
             }
