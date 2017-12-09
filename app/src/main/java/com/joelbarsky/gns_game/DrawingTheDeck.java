@@ -26,11 +26,11 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
     // for scaling on different screen size
     // scale factor is predetermined
-    private double cardWidthFactor = 81.000000/1776.000000;
-    private double cardHeightFactor = 117.000000/1080.000000;
-    private double colSpacingFactor = 100.000000/1776.000000;
-    private double rowSpacingFactor = 130.000000/1080.000000;
-    private static double undoXFactor = 1600.00000/1920.00000;
+    private double cardWidthFactor = 100.000000/1776.000000;
+    private double cardHeightFactor = 120.000000/1080.000000;
+    private double colSpacingFactor = 130.000000/1776.000000;
+    private double rowSpacingFactor = 140.000000/1080.000000;
+    private static double undoXFactor = 1700.00000/1920.00000;
     private static double undoYFactor = 350.00000 / 1080.00000;
     private static double saveXFactor = 1800.00000/1920.00000;
     private static double saveYFactor = 350.00000 / 1080.00000;
@@ -114,10 +114,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public DrawingTheDeck(Context context) {
         super(context);
         undoCard[0] = 100;
-        System.out.println("col: " + colSpacing);
-        System.out.println("row: " + rowSpacing);
-        System.out.println("width: " + cardWidth);
-        System.out.println("height: " + cardHeight);
+//        System.out.println("col: " + colSpacing);
+//        System.out.println("row: " + rowSpacing);
+//        System.out.println("width: " + cardWidth);
+//        System.out.println("height: " + cardHeight);
 
         undoXCoordinate = (int) Math.round(Game.getScreenWidth()*undoXFactor);
         undoYCoordinate = (int) Math.round(Game.getScreenHeight()*undoYFactor);
@@ -130,6 +130,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         cardWidth = (int) Math.round(Game.getScreenWidth()*cardWidthFactor);
         cardHeight = (int) Math.round(Game.getScreenHeight()*cardHeightFactor);
         cardSpacing = colSpacing - cardWidth;
+        offset = (int) Math.round(Game.getScreenWidth()*20.0000/1776.0000);
 
         //Load the sprite sheet
         ss = BitmapFactory.decodeResource(getResources(), R.drawable.deck_sheet3);
@@ -165,8 +166,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
     public void run() {
 
         long lastTime = System.nanoTime();
-        final double amountOfTicks = 60.0;
-        double ns = 1000000000 / amountOfTicks;
+        final double amountOfTicks = 120.0000;
+        double ns = 1000000000.0000 / amountOfTicks;
         double delta = 0;
         int updates = 0;
         int frames = 0;
@@ -292,7 +293,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
             else if (allowedMove(a, j)) {
                 updateGameBoard(a, j);
-                System.out.println("test");
+                //System.out.println("test");
                 if (gameEnd()){
                     //todo go to win screen
                     System.out.println("win");
@@ -301,7 +302,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             else if (!preventUndo1){
                 undo();
                 Game.setInUndo(false);
-                System.out.println("test1");
+                //System.out.println("test1");
             }
         }
         // resets undo boolean
@@ -688,7 +689,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
 
         if ((destination == null) && !(i == 4 || i ==9)){
-            System.out.println("EMPTY ROW");
+            //System.out.println("EMPTY ROW");
             return true;
         }
 
@@ -726,10 +727,10 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             }
         }
         if(destination!=null){
-            System.out.println(destination.toString());
-            System.out.print(i);
+            //System.out.println(destination.toString());
+            //System.out.print(i);
         }
-        System.out.println();
+        //System.out.println();
         return false;
     }
 
@@ -916,7 +917,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
 
             //undo card position
             int initrow = rowFromPos(allX[undoCard[undoIndex]],allY[undoCard[undoIndex]]);
-            System.out.println(initrow);
+            //System.out.println(initrow);
             allX[undoCard[undoIndex]] = undoX[undoIndex];
             allY[undoCard[undoIndex]] = undoY[undoIndex];
             Card c = deck.getCard(undoCard[undoIndex]);
@@ -925,8 +926,8 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
             if (initrow>10){
                 movesToFoundation--;
             }
-            System.out.println("X ="+ undoX[undoIndex]+ " Y= "+ undoY[undoIndex]);
-            System.out.println(j);
+            //System.out.println("X ="+ undoX[undoIndex]+ " Y= "+ undoY[undoIndex]);
+            //System.out.println(j);
             undoCard[undoIndex] = 100;
             updateGameBoard(c,j);
             undoX[undoIndex] = 0;
@@ -951,7 +952,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
         }
         undoPreviousStack[undoStackIndex] = previousIndex;
         //undoNextStack[undoStackIndex] = nextIndex;
-        System.out.println("saved previous: " + undoPreviousStack[undoStackIndex] + " saved at " + undoStackIndex);
+        //System.out.println("saved previous: " + undoPreviousStack[undoStackIndex] + " saved at " + undoStackIndex);
         undoStackIndex++;
         Game.setSavingStack(false);
     }
@@ -978,7 +979,7 @@ public class DrawingTheDeck extends SurfaceView implements Runnable{
                 undoNextIndex = i;
             }
         }
-        System.out.println(undoPreviousStack[undoStackIndex]);
+        //System.out.println(undoPreviousStack[undoStackIndex]);
 
             if (undoPreviousStack[undoStackIndex]!=100){
                 numCards[undoPreviousStack[undoStackIndex]]++;

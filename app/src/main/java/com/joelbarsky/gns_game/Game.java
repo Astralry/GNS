@@ -36,8 +36,8 @@ public class Game extends Activity implements OnTouchListener {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels; //x resolution
         screenHeight = metrics.heightPixels; //y resolution
-        System.out.println(screenWidth);
-        System.out.println(screenHeight);
+//        System.out.println(screenWidth);
+//        System.out.println(screenHeight);
         super.onCreate(savedInstanceState);
         v = new DrawingTheDeck(this);
         v.setOnTouchListener(this);
@@ -69,23 +69,25 @@ public class Game extends Activity implements OnTouchListener {
                         inUndo = true;
                         addingStack = false;
                         preventUndo1 = true;
+
                     }
                     else {
                         inUndo = false;
                         addingStack = true;
                         inDisplayOrder = true;
-                        preventUndo1 = false;
+
                         x = event.getX();
                         y = event.getY();
                     }
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     break;
                 case (MotionEvent.ACTION_MOVE):
                     inContact = true;
+                    preventUndo1 = false;
                     x = event.getX();
                     y = event.getY();
                     break;
